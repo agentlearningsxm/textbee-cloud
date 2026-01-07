@@ -1,0 +1,67 @@
+Downloading https://services.gradle.org/distributions/gradle-7.2-bin.zip
+..........10%...........20%...........30%...........40%...........50%...........60%...........70%...........80%...........90%...........100%
+
+Welcome to Gradle 7.2!
+
+Here are the highlights of this release:
+ - Toolchain support for Scala
+ - More cache hits when Java source files have platform-specific line endings
+ - More resilient remote HTTP build cache behavior
+
+For more details see https://docs.gradle.org/7.2/release-notes.html
+
+Starting a Gradle Daemon (subsequent builds will be faster)
+
+> Configure project :
+Warning: Please apply google-services plugin at the bottom of the build file.
+Warning: This version only understands SDK XML versions up to 3 but an SDK XML file of version 4 was encountered. This can happen if you use versions of Android Studio and the command-line tools that were released at different times.
+
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preSelfhostedDebugBuild UP-TO-DATE
+> Task :app:mergeSelfhostedDebugNativeDebugMetadata NO-SOURCE
+> Task :app:compileSelfhostedDebugAidl NO-SOURCE
+> Task :app:compileSelfhostedDebugRenderscript NO-SOURCE
+> Task :app:generateSelfhostedDebugBuildConfig UP-TO-DATE
+> Task :app:javaPreCompileSelfhostedDebug UP-TO-DATE
+> Task :app:checkSelfhostedDebugAarMetadata UP-TO-DATE
+> Task :app:generateSelfhostedDebugResValues UP-TO-DATE
+> Task :app:generateSelfhostedDebugResources UP-TO-DATE
+> Task :app:injectCrashlyticsMappingFileIdSelfhostedDebug UP-TO-DATE
+> Task :app:processSelfhostedDebugGoogleServices
+> Task :app:packageSelfhostedDebugResources
+> Task :app:mergeSelfhostedDebugResources
+> Task :app:createSelfhostedDebugCompatibleScreenManifests
+> Task :app:extractDeepLinksSelfhostedDebug
+> Task :app:parseSelfhostedDebugLocalResources
+> Task :app:processSelfhostedDebugMainManifest
+> Task :app:processSelfhostedDebugManifest
+> Task :app:mergeSelfhostedDebugShaders
+> Task :app:compileSelfhostedDebugShaders NO-SOURCE
+> Task :app:generateSelfhostedDebugAssets UP-TO-DATE
+> Task :app:mergeSelfhostedDebugAssets
+> Task :app:compressSelfhostedDebugAssets
+> Task :app:checkSelfhostedDebugDuplicateClasses
+> Task :app:desugarSelfhostedDebugFileDependencies
+> Task :app:processSelfhostedDebugManifestForPackage
+> Task :app:mergeExtDexSelfhostedDebug
+> Task :app:processSelfhostedDebugJavaRes NO-SOURCE
+> Task :app:mergeLibDexSelfhostedDebug
+> Task :app:mergeSelfhostedDebugJniLibFolders
+> Task :app:mergeSelfhostedDebugNativeLibs NO-SOURCE
+> Task :app:stripSelfhostedDebugDebugSymbols NO-SOURCE
+> Task :app:validateSigningSelfhostedDebug FAILED
+> Task :app:mergeSelfhostedDebugJavaResource
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':app:validateSigningSelfhostedDebug'.
+> Keystore file '/root/.android/debug.keystore' not found for signing config 'debug'.
+
+* Try:
+Run with --stacktrace option to get the stack trace. Run with --info or --debug option to get more log output. Run with --scan to get full insights.
+
+* Get more help at https://help.gradle.org
+
+BUILD FAILED in 3m 24s
+24 actionable tasks: 19 executed, 5 up-to-date

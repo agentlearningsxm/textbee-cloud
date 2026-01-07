@@ -1,0 +1,70 @@
+Downloading https://services.gradle.org/distributions/gradle-7.2-bin.zip
+..........10%...........20%...........30%...........40%...........50%...........60%...........70%...........80%...........90%...........100%
+
+Welcome to Gradle 7.2!
+
+Here are the highlights of this release:
+ - Toolchain support for Scala
+ - More cache hits when Java source files have platform-specific line endings
+ - More resilient remote HTTP build cache behavior
+
+For more details see https://docs.gradle.org/7.2/release-notes.html
+
+Starting a Gradle Daemon (subsequent builds will be faster)
+
+> Configure project :
+Warning: Please apply google-services plugin at the bottom of the build file.
+Warning: This version only understands SDK XML versions up to 3 but an SDK XML file of version 4 was encountered. This can happen if you use versions of Android Studio and the command-line tools that were released at different times.
+
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preSelfhostedDebugBuild UP-TO-DATE
+> Task :app:mergeSelfhostedDebugNativeDebugMetadata NO-SOURCE
+> Task :app:compileSelfhostedDebugAidl NO-SOURCE
+> Task :app:compileSelfhostedDebugRenderscript NO-SOURCE
+> Task :app:generateSelfhostedDebugBuildConfig UP-TO-DATE
+> Task :app:javaPreCompileSelfhostedDebug UP-TO-DATE
+> Task :app:checkSelfhostedDebugAarMetadata UP-TO-DATE
+> Task :app:generateSelfhostedDebugResValues UP-TO-DATE
+> Task :app:generateSelfhostedDebugResources UP-TO-DATE
+> Task :app:injectCrashlyticsMappingFileIdSelfhostedDebug UP-TO-DATE
+> Task :app:processSelfhostedDebugGoogleServices UP-TO-DATE
+> Task :app:mergeSelfhostedDebugResources UP-TO-DATE
+> Task :app:packageSelfhostedDebugResources UP-TO-DATE
+> Task :app:parseSelfhostedDebugLocalResources UP-TO-DATE
+> Task :app:createSelfhostedDebugCompatibleScreenManifests UP-TO-DATE
+> Task :app:extractDeepLinksSelfhostedDebug UP-TO-DATE
+> Task :app:processSelfhostedDebugMainManifest UP-TO-DATE
+> Task :app:processSelfhostedDebugManifest UP-TO-DATE
+> Task :app:processSelfhostedDebugManifestForPackage UP-TO-DATE
+> Task :app:mergeSelfhostedDebugShaders UP-TO-DATE
+> Task :app:compileSelfhostedDebugShaders NO-SOURCE
+> Task :app:generateSelfhostedDebugAssets UP-TO-DATE
+> Task :app:mergeSelfhostedDebugAssets UP-TO-DATE
+> Task :app:compressSelfhostedDebugAssets UP-TO-DATE
+> Task :app:checkSelfhostedDebugDuplicateClasses UP-TO-DATE
+> Task :app:desugarSelfhostedDebugFileDependencies UP-TO-DATE
+> Task :app:processSelfhostedDebugResources
+> Task :app:mergeExtDexSelfhostedDebug
+> Task :app:mergeExtDexSelfhostedDebug UP-TO-DATE
+
+> Task :app:compileSelfhostedDebugJavaWithJavac
+Note: Some input files use or override a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+
+> Task :app:mergeLibDexSelfhostedDebug UP-TO-DATE
+> Task :app:dexBuilderSelfhostedDebug
+> Task :app:processSelfhostedDebugJavaRes NO-SOURCE
+> Task :app:mergeSelfhostedDebugJavaResource UP-TO-DATE
+> Task :app:mergeSelfhostedDebugJniLibFolders UP-TO-DATE
+> Task :app:mergeProjectDexSelfhostedDebug
+> Task :app:mergeSelfhostedDebugNativeLibs NO-SOURCE
+> Task :app:stripSelfhostedDebugDebugSymbols NO-SOURCE
+> Task :app:validateSigningSelfhostedDebug
+> Task :app:writeSelfhostedDebugAppMetadata
+> Task :app:writeSelfhostedDebugSigningConfigVersions
+> Task :app:packageSelfhostedDebug
+> Task :app:createSelfhostedDebugApkListingFileRedirect
+> Task :app:assembleSelfhostedDebug
+
+BUILD SUCCESSFUL in 3m 5s
+32 actionable tasks: 9 executed, 23 up-to-date
