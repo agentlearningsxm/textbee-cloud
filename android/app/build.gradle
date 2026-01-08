@@ -67,7 +67,7 @@ android {
         selfhosted {
             dimension "environment"
             applicationId "com.vernu.sms.selfhosted"
-            buildConfigField "String", "API_BASE_URL", '"https://toolbox-arc-cedar-mining.trycloudflare.com/api/v1/"'
+            buildConfigField "String", "API_BASE_URL", '"https://textbee-cloud.onrender.com/api/v1/"'
             buildConfigField "String", "ENVIRONMENT", '"production"'
             resValue "string", "app_name", "TextBee SelfHosted"
         }
