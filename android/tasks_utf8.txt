@@ -1,0 +1,847 @@
+﻿
+> Configure project :app
+WARNING: The option setting 'android.defaults.buildfeatures.buildconfig=true' is deprecated.
+The current default is 'false'.
+It will be removed in version 9.0 of the Android Gradle plugin.
+You can resolve this warning in Android Studio via `Refactor` > `Migrate BuildConfig to Gradle Build Files`
+
+> Task :tasks
+
+------------------------------------------------------------
+Tasks runnable from root project 'TextBee'
+------------------------------------------------------------
+
+Android tasks
+-------------
+app:androidDependencies - Displays the Android dependencies of the project.
+app:signingReport - Displays the signing info for the base and test modules
+app:sourceSets - Prints out all the source sets defined in this project.
+
+Build tasks
+-----------
+app:assemble - Assemble main outputs for all the variants.
+app:assembleAndroidTest - Assembles all the Test applications.
+app:assembleDebug - Assembles main outputs for all Debug variants.
+app:assembleDev - Assembles main outputs for all Dev variants.
+app:assembleProd - Assembles main outputs for all Prod variants.
+app:assembleRelease - Assembles main outputs for all Release variants.
+app:assembleSelfhosted - Assembles main outputs for all Selfhosted variants.
+app:build - Assembles and tests this project.
+app:buildDependents - Assembles and tests this project and all projects that depend on it.
+app:buildNeeded - Assembles and tests this project and all projects it depends on.
+app:bundle - Assemble bundles for all the variants.
+app:bundleDebug - Assembles bundles for all Debug variants.
+app:bundleDev - Assembles bundles for all Dev variants.
+app:bundleProd - Assembles bundles for all Prod variants.
+app:bundleRelease - Assembles bundles for all Release variants.
+app:bundleSelfhosted - Assembles bundles for all Selfhosted variants.
+app:clean - Deletes the build directory.
+app:compileDevDebugAndroidTestSources
+app:compileDevDebugSources
+app:compileDevDebugUnitTestSources
+app:compileDevReleaseSources
+app:compileDevReleaseUnitTestSources
+app:compileProdDebugAndroidTestSources
+app:compileProdDebugSources
+app:compileProdDebugUnitTestSources
+app:compileProdReleaseSources
+app:compileProdReleaseUnitTestSources
+app:compileSelfhostedDebugAndroidTestSources
+app:compileSelfhostedDebugSources
+app:compileSelfhostedDebugUnitTestSources
+app:compileSelfhostedReleaseSources
+app:compileSelfhostedReleaseUnitTestSources
+
+Build Setup tasks
+-----------------
+init - Initializes a new Gradle build.
+wrapper - Generates Gradle wrapper files.
+
+Firebase Crashlytics tasks
+--------------------------
+app:injectCrashlyticsMappingFileIdDevDebug - Injects a mapping file id into the app, used by Crashlytics for deobfuscation.
+app:injectCrashlyticsMappingFileIdDevRelease - Injects a mapping file id into the app, used by Crashlytics for deobfuscation.
+app:injectCrashlyticsMappingFileIdProdDebug - Injects a mapping file id into the app, used by Crashlytics for deobfuscation.
+app:injectCrashlyticsMappingFileIdProdRelease - Injects a mapping file id into the app, used by Crashlytics for deobfuscation.
+app:injectCrashlyticsMappingFileIdSelfhostedDebug - Injects a mapping file id into the app, used by Crashlytics for deobfuscation.
+app:injectCrashlyticsMappingFileIdSelfhostedRelease - Injects a mapping file id into the app, used by Crashlytics for deobfuscation.
+
+Help tasks
+----------
+buildEnvironment - Displays all buildscript dependencies declared in root project 'TextBee'.
+app:buildEnvironment - Displays all buildscript dependencies declared in project ':app'.
+dependencies - Displays all dependencies declared in root project 'TextBee'.
+app:dependencies - Displays all dependencies declared in project ':app'.
+dependencyInsight - Displays the insight into a specific dependency in root project 'TextBee'.
+app:dependencyInsight - Displays the insight into a specific dependency in project ':app'.
+help - Displays a help message.
+app:help - Displays a help message.
+javaToolchains - Displays the detected java toolchains.
+app:javaToolchains - Displays the detected java toolchains.
+outgoingVariants - Displays the outgoing variants of root project 'TextBee'.
+app:outgoingVariants - Displays the outgoing variants of project ':app'.
+projects - Displays the sub-projects of root project 'TextBee'.
+app:projects - Displays the sub-projects of project ':app'.
+properties - Displays the properties of root project 'TextBee'.
+app:properties - Displays the properties of project ':app'.
+resolvableConfigurations - Displays the configurations that can be resolved in root project 'TextBee'.
+app:resolvableConfigurations - Displays the configurations that can be resolved in project ':app'.
+tasks - Displays the tasks runnable from root project 'TextBee' (some of the displayed tasks may belong to subprojects).
+app:tasks - Displays the tasks runnable from project ':app'.
+
+Install tasks
+-------------
+app:installDevDebug - Installs the Debug build for flavor Dev.
+app:installDevDebugAndroidTest - Installs the android (on device) tests for the DevDebug build.
+app:installDevRelease - Installs the Release build for flavor Dev.
+app:installProdDebug - Installs the Debug build for flavor Prod.
+app:installProdDebugAndroidTest - Installs the android (on device) tests for the ProdDebug build.
+app:installProdRelease - Installs the Release build for flavor Prod.
+app:installSelfhostedDebug - Installs the Debug build for flavor Selfhosted.
+app:installSelfhostedDebugAndroidTest - Installs the android (on device) tests for the SelfhostedDebug build.
+app:installSelfhostedRelease - Installs the Release build for flavor Selfhosted.
+app:uninstallAll - Uninstall all applications.
+app:uninstallDevDebug - Uninstalls the Debug build for flavor Dev.
+app:uninstallDevDebugAndroidTest - Uninstalls the android (on device) tests for the DevDebug build.
+app:uninstallDevRelease - Uninstalls the Release build for flavor Dev.
+app:uninstallProdDebug - Uninstalls the Debug build for flavor Prod.
+app:uninstallProdDebugAndroidTest - Uninstalls the android (on device) tests for the ProdDebug build.
+app:uninstallProdRelease - Uninstalls the Release build for flavor Prod.
+app:uninstallSelfhostedDebug - Uninstalls the Debug build for flavor Selfhosted.
+app:uninstallSelfhostedDebugAndroidTest - Uninstalls the android (on device) tests for the SelfhostedDebug build.
+app:uninstallSelfhostedRelease - Uninstalls the Release build for flavor Selfhosted.
+
+Verification tasks
+------------------
+app:check - Runs all checks.
+app:checkJetifier - Checks whether Jetifier is needed for the current project
+app:connectedAndroidTest - Installs and runs instrumentation tests for all flavors on connected devices.
+app:connectedCheck - Runs all device checks on currently connected devices.
+app:connectedDevDebugAndroidTest - Installs and runs the tests for devDebug on connected devices.
+app:connectedProdDebugAndroidTest - Installs and runs the tests for prodDebug on connected devices.
+app:connectedSelfhostedDebugAndroidTest - Installs and runs the tests for selfhostedDebug on connected devices.
+app:deviceAndroidTest - Installs and runs instrumentation tests using all Device Providers.
+app:deviceCheck - Runs all device checks using Device Providers and Test Servers.
+app:lint - Runs lint on the default variant.
+app:lintDevDebug - Print text output from the corresponding lint report task
+app:lintDevRelease - Print text output from the corresponding lint report task
+app:lintFix - Runs lint on the default variant and applies any safe suggestions to the source code.
+app:lintProdDebug - Print text output from the corresponding lint report task
+app:lintProdRelease - Print text output from the corresponding lint report task
+app:lintSelfhostedDebug - Print text output from the corresponding lint report task
+app:lintSelfhostedRelease - Print text output from the corresponding lint report task
+app:lintVitalDevRelease - Print text output from the corresponding lint report task
+app:lintVitalProdRelease - Print text output from the corresponding lint report task
+app:lintVitalSelfhostedRelease - Print text output from the corresponding lint report task
+app:test - Run unit tests for all variants.
+app:testDevDebugUnitTest - Run unit tests for the devDebug build.
+app:testDevReleaseUnitTest - Run unit tests for the devRelease build.
+app:testProdDebugUnitTest - Run unit tests for the prodDebug build.
+app:testProdReleaseUnitTest - Run unit tests for the prodRelease build.
+app:testSelfhostedDebugUnitTest - Run unit tests for the selfhostedDebug build.
+app:testSelfhostedReleaseUnitTest - Run unit tests for the selfhostedRelease build.
+app:updateLintBaseline - Updates the lint baseline using the default variant.
+
+Other tasks
+-----------
+app:analyzeDevDebugAndroidTestDependencies
+app:analyzeDevDebugDependencies
+app:analyzeDevDebugUnitTestDependencies
+app:analyzeDevReleaseDependencies
+app:analyzeDevReleaseUnitTestDependencies
+app:analyzeProdDebugAndroidTestDependencies
+app:analyzeProdDebugDependencies
+app:analyzeProdDebugUnitTestDependencies
+app:analyzeProdReleaseDependencies
+app:analyzeProdReleaseUnitTestDependencies
+app:analyzeSelfhostedDebugAndroidTestDependencies
+app:analyzeSelfhostedDebugDependencies
+app:analyzeSelfhostedDebugUnitTestDependencies
+app:analyzeSelfhostedReleaseDependencies
+app:analyzeSelfhostedReleaseUnitTestDependencies
+app:appIdListTask
+app:asarToCompatSplitsForDevDebug
+app:asarToCompatSplitsForDevRelease
+app:asarToCompatSplitsForProdDebug
+app:asarToCompatSplitsForProdRelease
+app:asarToCompatSplitsForSelfhostedDebug
+app:asarToCompatSplitsForSelfhostedRelease
+app:assembleDevDebug - Assembles main output for variant devDebug
+app:assembleDevDebugAndroidTest - Assembles main output for variant devDebugAndroidTest
+app:assembleDevDebugUnitTest - Assembles main output for variant devDebugUnitTest
+app:assembleDevRelease - Assembles main output for variant devRelease
+app:assembleDevReleaseUnitTest - Assembles main output for variant devReleaseUnitTest
+app:assembleProdDebug - Assembles main output for variant prodDebug
+app:assembleProdDebugAndroidTest - Assembles main output for variant prodDebugAndroidTest
+app:assembleProdDebugUnitTest - Assembles main output for variant prodDebugUnitTest
+app:assembleProdRelease - Assembles main output for variant prodRelease
+app:assembleProdReleaseUnitTest - Assembles main output for variant prodReleaseUnitTest
+app:assembleSelfhostedDebug - Assembles main output for variant selfhostedDebug
+app:assembleSelfhostedDebugAndroidTest - Assembles main output for variant selfhostedDebugAndroidTest
+app:assembleSelfhostedDebugUnitTest - Assembles main output for variant selfhostedDebugUnitTest
+app:assembleSelfhostedRelease - Assembles main output for variant selfhostedRelease
+app:assembleSelfhostedReleaseUnitTest - Assembles main output for variant selfhostedReleaseUnitTest
+app:buildDevDebugPreBundle
+app:buildDevReleasePreBundle
+app:buildProdDebugPreBundle
+app:buildProdReleasePreBundle
+app:buildSelfhostedDebugPreBundle
+app:buildSelfhostedReleasePreBundle
+app:bundleDevDebug - Assembles bundle for variant devDebug
+app:bundleDevDebugClassesToCompileJar
+app:bundleDevDebugClassesToRuntimeJar
+app:bundleDevDebugResources
+app:bundleDevRelease - Assembles bundle for variant devRelease
+app:bundleDevReleaseClassesToCompileJar
+app:bundleDevReleaseClassesToRuntimeJar
+app:bundleDevReleaseResources
+app:bundleProdDebug - Assembles bundle for variant prodDebug
+app:bundleProdDebugClassesToCompileJar
+app:bundleProdDebugClassesToRuntimeJar
+app:bundleProdDebugResources
+app:bundleProdRelease - Assembles bundle for variant prodRelease
+app:bundleProdReleaseClassesToCompileJar
+app:bundleProdReleaseClassesToRuntimeJar
+app:bundleProdReleaseResources
+app:bundleSelfhostedDebug - Assembles bundle for variant selfhostedDebug
+app:bundleSelfhostedDebugClassesToCompileJar
+app:bundleSelfhostedDebugClassesToRuntimeJar
+app:bundleSelfhostedDebugResources
+app:bundleSelfhostedRelease - Assembles bundle for variant selfhostedRelease
+app:bundleSelfhostedReleaseClassesToCompileJar
+app:bundleSelfhostedReleaseClassesToRuntimeJar
+app:bundleSelfhostedReleaseResources
+app:checkDevDebugAarMetadata
+app:checkDevDebugAndroidTestAarMetadata
+app:checkDevDebugAndroidTestDuplicateClasses
+app:checkDevDebugDuplicateClasses
+app:checkDevDebugManifest
+app:checkDevReleaseAarMetadata
+app:checkDevReleaseDuplicateClasses
+app:checkDevReleaseManifest
+app:checkProdDebugAarMetadata
+app:checkProdDebugAndroidTestAarMetadata
+app:checkProdDebugAndroidTestDuplicateClasses
+app:checkProdDebugDuplicateClasses
+app:checkProdDebugManifest
+app:checkProdReleaseAarMetadata
+app:checkProdReleaseDuplicateClasses
+app:checkProdReleaseManifest
+app:checkSelfhostedDebugAarMetadata
+app:checkSelfhostedDebugAndroidTestAarMetadata
+app:checkSelfhostedDebugAndroidTestDuplicateClasses
+app:checkSelfhostedDebugDuplicateClasses
+app:checkSelfhostedDebugManifest
+app:checkSelfhostedReleaseAarMetadata
+app:checkSelfhostedReleaseDuplicateClasses
+app:checkSelfhostedReleaseManifest
+clean
+app:collectDevReleaseDependencies
+app:collectProdReleaseDependencies
+app:collectSelfhostedReleaseDependencies
+app:compileDevDebugAndroidTestJavaWithJavac
+app:compileDevDebugAndroidTestShaders
+app:compileDevDebugArtProfile
+app:compileDevDebugJavaWithJavac
+app:compileDevDebugShaders
+app:compileDevDebugUnitTestJavaWithJavac
+app:compileDevReleaseArtProfile
+app:compileDevReleaseJavaWithJavac
+app:compileDevReleaseShaders
+app:compileDevReleaseUnitTestJavaWithJavac
+app:compileLint
+app:compileLintChecks
+app:compileProdDebugAndroidTestJavaWithJavac
+app:compileProdDebugAndroidTestShaders
+app:compileProdDebugArtProfile
+app:compileProdDebugJavaWithJavac
+app:compileProdDebugShaders
+app:compileProdDebugUnitTestJavaWithJavac
+app:compileProdReleaseArtProfile
+app:compileProdReleaseJavaWithJavac
+app:compileProdReleaseShaders
+app:compileProdReleaseUnitTestJavaWithJavac
+app:compileSelfhostedDebugAndroidTestJavaWithJavac
+app:compileSelfhostedDebugAndroidTestShaders
+app:compileSelfhostedDebugArtProfile
+app:compileSelfhostedDebugJavaWithJavac
+app:compileSelfhostedDebugShaders
+app:compileSelfhostedDebugUnitTestJavaWithJavac
+app:compileSelfhostedReleaseArtProfile
+app:compileSelfhostedReleaseJavaWithJavac
+app:compileSelfhostedReleaseShaders
+app:compileSelfhostedReleaseUnitTestJavaWithJavac
+components - Displays the components produced by root project 'TextBee'. [deprecated]
+app:components - Displays the components produced by project ':app'. [deprecated]
+app:compressDevDebugAndroidTestAssets
+app:compressDevDebugAssets
+app:compressDevReleaseAssets
+app:compressProdDebugAndroidTestAssets
+app:compressProdDebugAssets
+app:compressProdReleaseAssets
+app:compressSelfhostedDebugAndroidTestAssets
+app:compressSelfhostedDebugAssets
+app:compressSelfhostedReleaseAssets
+app:configureDevReleaseDependencies
+app:configureProdReleaseDependencies
+app:configureSelfhostedReleaseDependencies
+app:consumeConfigAttr
+app:createDevDebugAndroidTestApkListingFileRedirect
+app:createDevDebugApkListingFileRedirect
+app:createDevDebugApksFromBundleListingFileRedirect
+app:createDevDebugBundleListingFileRedirect
+app:createDevDebugCompatibleScreenManifests
+app:createDevDebugVariantModel
+app:createDevReleaseApkListingFileRedirect
+app:createDevReleaseApksFromBundleListingFileRedirect
+app:createDevReleaseBundleListingFileRedirect
+app:createDevReleaseCompatibleScreenManifests
+app:createDevReleaseVariantModel
+app:createMockableJar
+app:createProdDebugAndroidTestApkListingFileRedirect
+app:createProdDebugApkListingFileRedirect
+app:createProdDebugApksFromBundleListingFileRedirect
+app:createProdDebugBundleListingFileRedirect
+app:createProdDebugCompatibleScreenManifests
+app:createProdDebugVariantModel
+app:createProdReleaseApkListingFileRedirect
+app:createProdReleaseApksFromBundleListingFileRedirect
+app:createProdReleaseBundleListingFileRedirect
+app:createProdReleaseCompatibleScreenManifests
+app:createProdReleaseVariantModel
+app:createSelfhostedDebugAndroidTestApkListingFileRedirect
+app:createSelfhostedDebugApkListingFileRedirect
+app:createSelfhostedDebugApksFromBundleListingFileRedirect
+app:createSelfhostedDebugBundleListingFileRedirect
+app:createSelfhostedDebugCompatibleScreenManifests
+app:createSelfhostedDebugVariantModel
+app:createSelfhostedReleaseApkListingFileRedirect
+app:createSelfhostedReleaseApksFromBundleListingFileRedirect
+app:createSelfhostedReleaseBundleListingFileRedirect
+app:createSelfhostedReleaseCompatibleScreenManifests
+app:createSelfhostedReleaseVariantModel
+dependentComponents - Displays the dependent components of components in root project 'TextBee'. [deprecated]
+app:dependentComponents - Displays the dependent components of components in project ':app'. [deprecated]
+app:desugarDevDebugAndroidTestFileDependencies
+app:desugarDevDebugFileDependencies
+app:desugarDevReleaseFileDependencies
+app:desugarProdDebugAndroidTestFileDependencies
+app:desugarProdDebugFileDependencies
+app:desugarProdReleaseFileDependencies
+app:desugarSelfhostedDebugAndroidTestFileDependencies
+app:desugarSelfhostedDebugFileDependencies
+app:desugarSelfhostedReleaseFileDependencies
+app:dexBuilderDevDebug
+app:dexBuilderDevDebugAndroidTest
+app:dexBuilderDevRelease
+app:dexBuilderProdDebug
+app:dexBuilderProdDebugAndroidTest
+app:dexBuilderProdRelease
+app:dexBuilderSelfhostedDebug
+app:dexBuilderSelfhostedDebugAndroidTest
+app:dexBuilderSelfhostedRelease
+app:extractApksForDevDebug
+app:extractApksForDevRelease
+app:extractApksForProdDebug
+app:extractApksForProdRelease
+app:extractApksForSelfhostedDebug
+app:extractApksForSelfhostedRelease
+app:extractApksFromBundleForDevDebug
+app:extractApksFromBundleForDevRelease
+app:extractApksFromBundleForProdDebug
+app:extractApksFromBundleForProdRelease
+app:extractApksFromBundleForSelfhostedDebug
+app:extractApksFromBundleForSelfhostedRelease
+app:extractApksFromSdkSplitsForDevDebug
+app:extractApksFromSdkSplitsForDevRelease
+app:extractApksFromSdkSplitsForProdDebug
+app:extractApksFromSdkSplitsForProdRelease
+app:extractApksFromSdkSplitsForSelfhostedDebug
+app:extractApksFromSdkSplitsForSelfhostedRelease
+app:extractDeepLinksDevDebug
+app:extractDeepLinksDevRelease
+app:extractDeepLinksProdDebug
+app:extractDeepLinksProdRelease
+app:extractDeepLinksSelfhostedDebug
+app:extractDeepLinksSelfhostedRelease
+app:extractDevDebugNativeDebugMetadata
+app:extractDevDebugNativeSymbolTables
+app:extractDevReleaseNativeDebugMetadata
+app:extractDevReleaseNativeSymbolTables
+app:extractProdDebugNativeDebugMetadata
+app:extractProdDebugNativeSymbolTables
+app:extractProdReleaseNativeDebugMetadata
+app:extractProdReleaseNativeSymbolTables
+app:extractProguardFiles
+app:extractSelfhostedDebugNativeDebugMetadata
+app:extractSelfhostedDebugNativeSymbolTables
+app:extractSelfhostedReleaseNativeDebugMetadata
+app:extractSelfhostedReleaseNativeSymbolTables
+app:generateDevDebugAndroidTestAssets
+app:generateDevDebugAndroidTestBuildConfig
+app:generateDevDebugAndroidTestResources
+app:generateDevDebugAndroidTestResValues
+app:generateDevDebugAndroidTestSources
+app:generateDevDebugAssets
+app:generateDevDebugBuildConfig
+app:generateDevDebugFeatureMetadata
+app:generateDevDebugFeatureTransitiveDeps
+app:generateDevDebugLintModel
+app:generateDevDebugLintReportModel
+app:generateDevDebugManifestClass
+app:generateDevDebugResources
+app:generateDevDebugResValues
+app:generateDevDebugSources
+app:generateDevDebugUnitTestAssets
+app:generateDevDebugUnitTestResources
+app:generateDevDebugUnitTestSources
+app:generateDevReleaseAssets
+app:generateDevReleaseBuildConfig
+app:generateDevReleaseFeatureMetadata
+app:generateDevReleaseFeatureTransitiveDeps
+app:generateDevReleaseLintModel
+app:generateDevReleaseLintReportModel
+app:generateDevReleaseLintVitalReportModel
+app:generateDevReleaseManifestClass
+app:generateDevReleaseResources
+app:generateDevReleaseResValues
+app:generateDevReleaseSources
+app:generateDevReleaseUnitTestAssets
+app:generateDevReleaseUnitTestResources
+app:generateDevReleaseUnitTestSources
+app:generateProdDebugAndroidTestAssets
+app:generateProdDebugAndroidTestBuildConfig
+app:generateProdDebugAndroidTestResources
+app:generateProdDebugAndroidTestResValues
+app:generateProdDebugAndroidTestSources
+app:generateProdDebugAssets
+app:generateProdDebugBuildConfig
+app:generateProdDebugFeatureMetadata
+app:generateProdDebugFeatureTransitiveDeps
+app:generateProdDebugLintModel
+app:generateProdDebugLintReportModel
+app:generateProdDebugManifestClass
+app:generateProdDebugResources
+app:generateProdDebugResValues
+app:generateProdDebugSources
+app:generateProdDebugUnitTestAssets
+app:generateProdDebugUnitTestResources
+app:generateProdDebugUnitTestSources
+app:generateProdReleaseAssets
+app:generateProdReleaseBuildConfig
+app:generateProdReleaseFeatureMetadata
+app:generateProdReleaseFeatureTransitiveDeps
+app:generateProdReleaseLintModel
+app:generateProdReleaseLintReportModel
+app:generateProdReleaseLintVitalReportModel
+app:generateProdReleaseManifestClass
+app:generateProdReleaseResources
+app:generateProdReleaseResValues
+app:generateProdReleaseSources
+app:generateProdReleaseUnitTestAssets
+app:generateProdReleaseUnitTestResources
+app:generateProdReleaseUnitTestSources
+app:generateSelfhostedDebugAndroidTestAssets
+app:generateSelfhostedDebugAndroidTestBuildConfig
+app:generateSelfhostedDebugAndroidTestResources
+app:generateSelfhostedDebugAndroidTestResValues
+app:generateSelfhostedDebugAndroidTestSources
+app:generateSelfhostedDebugAssets
+app:generateSelfhostedDebugBuildConfig
+app:generateSelfhostedDebugFeatureMetadata
+app:generateSelfhostedDebugFeatureTransitiveDeps
+app:generateSelfhostedDebugLintModel
+app:generateSelfhostedDebugLintReportModel
+app:generateSelfhostedDebugManifestClass
+app:generateSelfhostedDebugResources
+app:generateSelfhostedDebugResValues
+app:generateSelfhostedDebugSources
+app:generateSelfhostedDebugUnitTestAssets
+app:generateSelfhostedDebugUnitTestResources
+app:generateSelfhostedDebugUnitTestSources
+app:generateSelfhostedReleaseAssets
+app:generateSelfhostedReleaseBuildConfig
+app:generateSelfhostedReleaseFeatureMetadata
+app:generateSelfhostedReleaseFeatureTransitiveDeps
+app:generateSelfhostedReleaseLintModel
+app:generateSelfhostedReleaseLintReportModel
+app:generateSelfhostedReleaseLintVitalReportModel
+app:generateSelfhostedReleaseManifestClass
+app:generateSelfhostedReleaseResources
+app:generateSelfhostedReleaseResValues
+app:generateSelfhostedReleaseSources
+app:generateSelfhostedReleaseUnitTestAssets
+app:generateSelfhostedReleaseUnitTestResources
+app:generateSelfhostedReleaseUnitTestSources
+app:javaPreCompileDevDebug
+app:javaPreCompileDevDebugAndroidTest
+app:javaPreCompileDevDebugUnitTest
+app:javaPreCompileDevRelease
+app:javaPreCompileDevReleaseUnitTest
+app:javaPreCompileProdDebug
+app:javaPreCompileProdDebugAndroidTest
+app:javaPreCompileProdDebugUnitTest
+app:javaPreCompileProdRelease
+app:javaPreCompileProdReleaseUnitTest
+app:javaPreCompileSelfhostedDebug
+app:javaPreCompileSelfhostedDebugAndroidTest
+app:javaPreCompileSelfhostedDebugUnitTest
+app:javaPreCompileSelfhostedRelease
+app:javaPreCompileSelfhostedReleaseUnitTest
+app:lintAnalyzeDevDebug - Run lint analysis on the devDebug variant
+app:lintAnalyzeDevRelease - Run lint analysis on the devRelease variant
+app:lintAnalyzeProdDebug - Run lint analysis on the prodDebug variant
+app:lintAnalyzeProdRelease - Run lint analysis on the prodRelease variant
+app:lintAnalyzeSelfhostedDebug - Run lint analysis on the selfhostedDebug variant
+app:lintAnalyzeSelfhostedRelease - Run lint analysis on the selfhostedRelease variant
+app:lintFixDevDebug - Fix lint on the devDebug variant
+app:lintFixDevRelease - Fix lint on the devRelease variant
+app:lintFixProdDebug - Fix lint on the prodDebug variant
+app:lintFixProdRelease - Fix lint on the prodRelease variant
+app:lintFixSelfhostedDebug - Fix lint on the selfhostedDebug variant
+app:lintFixSelfhostedRelease - Fix lint on the selfhostedRelease variant
+app:lintReportDevDebug - Run lint on the devDebug variant
+app:lintReportDevRelease - Run lint on the devRelease variant
+app:lintReportProdDebug - Run lint on the prodDebug variant
+app:lintReportProdRelease - Run lint on the prodRelease variant
+app:lintReportSelfhostedDebug - Run lint on the selfhostedDebug variant
+app:lintReportSelfhostedRelease - Run lint on the selfhostedRelease variant
+app:lintVitalAnalyzeDevRelease - Run lint analysis with only the fatal issues enabled on the devRelease variant
+app:lintVitalAnalyzeProdRelease - Run lint analysis with only the fatal issues enabled on the prodRelease variant
+app:lintVitalAnalyzeSelfhostedRelease - Run lint analysis with only the fatal issues enabled on the selfhostedRelease variant
+app:lintVitalReportDevRelease - Run lint with only the fatal issues enabled on the devRelease variant
+app:lintVitalReportProdRelease - Run lint with only the fatal issues enabled on the prodRelease variant
+app:lintVitalReportSelfhostedRelease - Run lint with only the fatal issues enabled on the selfhostedRelease variant
+app:makeApkFromBundleForDevDebug
+app:makeApkFromBundleForDevRelease
+app:makeApkFromBundleForProdDebug
+app:makeApkFromBundleForProdRelease
+app:makeApkFromBundleForSelfhostedDebug
+app:makeApkFromBundleForSelfhostedRelease
+app:mapDevDebugAndroidTestSourceSetPaths
+app:mapDevDebugSourceSetPaths
+app:mapDevReleaseSourceSetPaths
+app:mapProdDebugAndroidTestSourceSetPaths
+app:mapProdDebugSourceSetPaths
+app:mapProdReleaseSourceSetPaths
+app:mapSelfhostedDebugAndroidTestSourceSetPaths
+app:mapSelfhostedDebugSourceSetPaths
+app:mapSelfhostedReleaseSourceSetPaths
+app:mergeDevDebugAndroidTestAssets
+app:mergeDevDebugAndroidTestGeneratedProguardFiles
+app:mergeDevDebugAndroidTestJavaResource
+app:mergeDevDebugAndroidTestJniLibFolders
+app:mergeDevDebugAndroidTestNativeLibs
+app:mergeDevDebugAndroidTestResources
+app:mergeDevDebugAndroidTestShaders
+app:mergeDevDebugArtProfile
+app:mergeDevDebugAssets
+app:mergeDevDebugGeneratedProguardFiles
+app:mergeDevDebugJavaResource
+app:mergeDevDebugJniLibFolders
+app:mergeDevDebugNativeDebugMetadata
+app:mergeDevDebugNativeLibs
+app:mergeDevDebugResources
+app:mergeDevDebugShaders
+app:mergeDevReleaseArtProfile
+app:mergeDevReleaseAssets
+app:mergeDevReleaseGeneratedProguardFiles
+app:mergeDevReleaseGlobalSynthetics
+app:mergeDevReleaseJavaResource
+app:mergeDevReleaseJniLibFolders
+app:mergeDevReleaseNativeDebugMetadata
+app:mergeDevReleaseNativeLibs
+app:mergeDevReleaseResources
+app:mergeDevReleaseShaders
+app:mergeDexDevRelease
+app:mergeDexProdRelease
+app:mergeDexSelfhostedRelease
+app:mergeExtDexDevDebug
+app:mergeExtDexDevDebugAndroidTest
+app:mergeExtDexDevRelease
+app:mergeExtDexProdDebug
+app:mergeExtDexProdDebugAndroidTest
+app:mergeExtDexProdRelease
+app:mergeExtDexSelfhostedDebug
+app:mergeExtDexSelfhostedDebugAndroidTest
+app:mergeExtDexSelfhostedRelease
+app:mergeLibDexDevDebug
+app:mergeLibDexDevDebugAndroidTest
+app:mergeLibDexProdDebug
+app:mergeLibDexProdDebugAndroidTest
+app:mergeLibDexSelfhostedDebug
+app:mergeLibDexSelfhostedDebugAndroidTest
+app:mergeProdDebugAndroidTestAssets
+app:mergeProdDebugAndroidTestGeneratedProguardFiles
+app:mergeProdDebugAndroidTestJavaResource
+app:mergeProdDebugAndroidTestJniLibFolders
+app:mergeProdDebugAndroidTestNativeLibs
+app:mergeProdDebugAndroidTestResources
+app:mergeProdDebugAndroidTestShaders
+app:mergeProdDebugArtProfile
+app:mergeProdDebugAssets
+app:mergeProdDebugGeneratedProguardFiles
+app:mergeProdDebugJavaResource
+app:mergeProdDebugJniLibFolders
+app:mergeProdDebugNativeDebugMetadata
+app:mergeProdDebugNativeLibs
+app:mergeProdDebugResources
+app:mergeProdDebugShaders
+app:mergeProdReleaseArtProfile
+app:mergeProdReleaseAssets
+app:mergeProdReleaseGeneratedProguardFiles
+app:mergeProdReleaseGlobalSynthetics
+app:mergeProdReleaseJavaResource
+app:mergeProdReleaseJniLibFolders
+app:mergeProdReleaseNativeDebugMetadata
+app:mergeProdReleaseNativeLibs
+app:mergeProdReleaseResources
+app:mergeProdReleaseShaders
+app:mergeProjectDexDevDebug
+app:mergeProjectDexDevDebugAndroidTest
+app:mergeProjectDexProdDebug
+app:mergeProjectDexProdDebugAndroidTest
+app:mergeProjectDexSelfhostedDebug
+app:mergeProjectDexSelfhostedDebugAndroidTest
+app:mergeSelfhostedDebugAndroidTestAssets
+app:mergeSelfhostedDebugAndroidTestGeneratedProguardFiles
+app:mergeSelfhostedDebugAndroidTestJavaResource
+app:mergeSelfhostedDebugAndroidTestJniLibFolders
+app:mergeSelfhostedDebugAndroidTestNativeLibs
+app:mergeSelfhostedDebugAndroidTestResources
+app:mergeSelfhostedDebugAndroidTestShaders
+app:mergeSelfhostedDebugArtProfile
+app:mergeSelfhostedDebugAssets
+app:mergeSelfhostedDebugGeneratedProguardFiles
+app:mergeSelfhostedDebugJavaResource
+app:mergeSelfhostedDebugJniLibFolders
+app:mergeSelfhostedDebugNativeDebugMetadata
+app:mergeSelfhostedDebugNativeLibs
+app:mergeSelfhostedDebugResources
+app:mergeSelfhostedDebugShaders
+app:mergeSelfhostedReleaseArtProfile
+app:mergeSelfhostedReleaseAssets
+app:mergeSelfhostedReleaseGeneratedProguardFiles
+app:mergeSelfhostedReleaseGlobalSynthetics
+app:mergeSelfhostedReleaseJavaResource
+app:mergeSelfhostedReleaseJniLibFolders
+app:mergeSelfhostedReleaseNativeDebugMetadata
+app:mergeSelfhostedReleaseNativeLibs
+app:mergeSelfhostedReleaseResources
+app:mergeSelfhostedReleaseShaders
+model - Displays the configuration model of root project 'TextBee'. [deprecated]
+app:model - Displays the configuration model of project ':app'. [deprecated]
+app:optimizeDevReleaseResources
+app:optimizeProdReleaseResources
+app:optimizeSelfhostedReleaseResources
+app:packageDevDebug
+app:packageDevDebugAndroidTest
+app:packageDevDebugBundle
+app:packageDevDebugResources
+app:packageDevDebugUniversalApk
+app:packageDevRelease
+app:packageDevReleaseBundle
+app:packageDevReleaseResources
+app:packageDevReleaseUniversalApk
+app:packageProdDebug
+app:packageProdDebugAndroidTest
+app:packageProdDebugBundle
+app:packageProdDebugResources
+app:packageProdDebugUniversalApk
+app:packageProdRelease
+app:packageProdReleaseBundle
+app:packageProdReleaseResources
+app:packageProdReleaseUniversalApk
+app:packageSelfhostedDebug
+app:packageSelfhostedDebugAndroidTest
+app:packageSelfhostedDebugBundle
+app:packageSelfhostedDebugResources
+app:packageSelfhostedDebugUniversalApk
+app:packageSelfhostedRelease
+app:packageSelfhostedReleaseBundle
+app:packageSelfhostedReleaseResources
+app:packageSelfhostedReleaseUniversalApk
+app:parseDevDebugIntegrityConfig
+app:parseDevDebugLocalResources
+app:parseDevReleaseIntegrityConfig
+app:parseDevReleaseLocalResources
+app:parseProdDebugIntegrityConfig
+app:parseProdDebugLocalResources
+app:parseProdReleaseIntegrityConfig
+app:parseProdReleaseLocalResources
+app:parseSelfhostedDebugIntegrityConfig
+app:parseSelfhostedDebugLocalResources
+app:parseSelfhostedReleaseIntegrityConfig
+app:parseSelfhostedReleaseLocalResources
+app:preBuild
+app:preDevDebugAndroidTestBuild
+app:preDevDebugBuild
+app:preDevDebugUnitTestBuild
+app:preDevReleaseBuild
+app:preDevReleaseUnitTestBuild
+prepareKotlinBuildScriptModel
+app:prepareLintJarForPublish
+app:preProdDebugAndroidTestBuild
+app:preProdDebugBuild
+app:preProdDebugUnitTestBuild
+app:preProdReleaseBuild
+app:preProdReleaseUnitTestBuild
+app:preSelfhostedDebugAndroidTestBuild
+app:preSelfhostedDebugBuild
+app:preSelfhostedDebugUnitTestBuild
+app:preSelfhostedReleaseBuild
+app:preSelfhostedReleaseUnitTestBuild
+app:processApplicationManifestDevDebugForBundle
+app:processApplicationManifestDevReleaseForBundle
+app:processApplicationManifestProdDebugForBundle
+app:processApplicationManifestProdReleaseForBundle
+app:processApplicationManifestSelfhostedDebugForBundle
+app:processApplicationManifestSelfhostedReleaseForBundle
+app:processDevDebugAndroidTestJavaRes
+app:processDevDebugAndroidTestManifest
+app:processDevDebugAndroidTestResources
+app:processDevDebugGoogleServices
+app:processDevDebugJavaRes
+app:processDevDebugMainManifest
+app:processDevDebugManifest
+app:processDevDebugManifestForInstantApp
+app:processDevDebugManifestForPackage
+app:processDevDebugResources
+app:processDevDebugUnitTestJavaRes
+app:processDevReleaseGoogleServices
+app:processDevReleaseJavaRes
+app:processDevReleaseMainManifest
+app:processDevReleaseManifest
+app:processDevReleaseManifestForInstantApp
+app:processDevReleaseManifestForPackage
+app:processDevReleaseResources
+app:processDevReleaseUnitTestJavaRes
+app:processManifestDevDebugForFeature
+app:processManifestDevReleaseForFeature
+app:processManifestProdDebugForFeature
+app:processManifestProdReleaseForFeature
+app:processManifestSelfhostedDebugForFeature
+app:processManifestSelfhostedReleaseForFeature
+app:processProdDebugAndroidTestJavaRes
+app:processProdDebugAndroidTestManifest
+app:processProdDebugAndroidTestResources
+app:processProdDebugGoogleServices
+app:processProdDebugJavaRes
+app:processProdDebugMainManifest
+app:processProdDebugManifest
+app:processProdDebugManifestForInstantApp
+app:processProdDebugManifestForPackage
+app:processProdDebugResources
+app:processProdDebugUnitTestJavaRes
+app:processProdReleaseGoogleServices
+app:processProdReleaseJavaRes
+app:processProdReleaseMainManifest
+app:processProdReleaseManifest
+app:processProdReleaseManifestForInstantApp
+app:processProdReleaseManifestForPackage
+app:processProdReleaseResources
+app:processProdReleaseUnitTestJavaRes
+app:processSelfhostedDebugAndroidTestJavaRes
+app:processSelfhostedDebugAndroidTestManifest
+app:processSelfhostedDebugAndroidTestResources
+app:processSelfhostedDebugGoogleServices
+app:processSelfhostedDebugJavaRes
+app:processSelfhostedDebugMainManifest
+app:processSelfhostedDebugManifest
+app:processSelfhostedDebugManifestForInstantApp
+app:processSelfhostedDebugManifestForPackage
+app:processSelfhostedDebugResources
+app:processSelfhostedDebugUnitTestJavaRes
+app:processSelfhostedReleaseGoogleServices
+app:processSelfhostedReleaseJavaRes
+app:processSelfhostedReleaseMainManifest
+app:processSelfhostedReleaseManifest
+app:processSelfhostedReleaseManifestForInstantApp
+app:processSelfhostedReleaseManifestForPackage
+app:processSelfhostedReleaseResources
+app:processSelfhostedReleaseUnitTestJavaRes
+app:produceDevDebugBundleIdeListingFile
+app:produceDevReleaseBundleIdeListingFile
+app:produceProdDebugBundleIdeListingFile
+app:produceProdReleaseBundleIdeListingFile
+app:produceSelfhostedDebugBundleIdeListingFile
+app:produceSelfhostedReleaseBundleIdeListingFile
+app:resolveConfigAttr
+app:sdkDevReleaseDependencyData
+app:sdkProdReleaseDependencyData
+app:sdkSelfhostedReleaseDependencyData
+app:signDevDebugBundle
+app:signDevReleaseBundle
+app:signingConfigWriterDevDebug
+app:signingConfigWriterDevDebugAndroidTest
+app:signingConfigWriterDevRelease
+app:signingConfigWriterProdDebug
+app:signingConfigWriterProdDebugAndroidTest
+app:signingConfigWriterProdRelease
+app:signingConfigWriterSelfhostedDebug
+app:signingConfigWriterSelfhostedDebugAndroidTest
+app:signingConfigWriterSelfhostedRelease
+app:signProdDebugBundle
+app:signProdReleaseBundle
+app:signSelfhostedDebugBundle
+app:signSelfhostedReleaseBundle
+app:stripDevDebugAndroidTestDebugSymbols
+app:stripDevDebugDebugSymbols
+app:stripDevReleaseDebugSymbols
+app:stripProdDebugAndroidTestDebugSymbols
+app:stripProdDebugDebugSymbols
+app:stripProdReleaseDebugSymbols
+app:stripSelfhostedDebugAndroidTestDebugSymbols
+app:stripSelfhostedDebugDebugSymbols
+app:stripSelfhostedReleaseDebugSymbols
+app:updateLintBaselineDevDebug - Update the lint baseline using the devDebug variant
+app:updateLintBaselineDevRelease - Update the lint baseline using the devRelease variant
+app:updateLintBaselineProdDebug - Update the lint baseline using the prodDebug variant
+app:updateLintBaselineProdRelease - Update the lint baseline using the prodRelease variant
+app:updateLintBaselineSelfhostedDebug - Update the lint baseline using the selfhostedDebug variant
+app:updateLintBaselineSelfhostedRelease - Update the lint baseline using the selfhostedRelease variant
+app:validateSigningDevDebug
+app:validateSigningDevDebugAndroidTest
+app:validateSigningDevRelease
+app:validateSigningProdDebug
+app:validateSigningProdDebugAndroidTest
+app:validateSigningProdRelease
+app:validateSigningSelfhostedDebug
+app:validateSigningSelfhostedDebugAndroidTest
+app:validateSigningSelfhostedRelease
+app:writeDevDebugAndroidTestSigningConfigVersions
+app:writeDevDebugApplicationId
+app:writeDevDebugAppMetadata
+app:writeDevDebugModuleMetadata
+app:writeDevDebugSigningConfigVersions
+app:writeDevReleaseApplicationId
+app:writeDevReleaseAppMetadata
+app:writeDevReleaseModuleMetadata
+app:writeDevReleaseSigningConfigVersions
+app:writeProdDebugAndroidTestSigningConfigVersions
+app:writeProdDebugApplicationId
+app:writeProdDebugAppMetadata
+app:writeProdDebugModuleMetadata
+app:writeProdDebugSigningConfigVersions
+app:writeProdReleaseApplicationId
+app:writeProdReleaseAppMetadata
+app:writeProdReleaseModuleMetadata
+app:writeProdReleaseSigningConfigVersions
+app:writeSelfhostedDebugAndroidTestSigningConfigVersions
+app:writeSelfhostedDebugApplicationId
+app:writeSelfhostedDebugAppMetadata
+app:writeSelfhostedDebugModuleMetadata
+app:writeSelfhostedDebugSigningConfigVersions
+app:writeSelfhostedReleaseApplicationId
+app:writeSelfhostedReleaseAppMetadata
+app:writeSelfhostedReleaseModuleMetadata
+app:writeSelfhostedReleaseSigningConfigVersions
+app:zipApksForDevDebug
+app:zipApksForDevRelease
+app:zipApksForProdDebug
+app:zipApksForProdRelease
+app:zipApksForSelfhostedDebug
+app:zipApksForSelfhostedRelease
+
+BUILD SUCCESSFUL in 6s
+1 actionable task: 1 executed

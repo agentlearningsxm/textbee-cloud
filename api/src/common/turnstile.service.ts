@@ -4,15 +4,15 @@ import axios from 'axios'
 @Injectable()
 export class TurnstileService {
   async verify(token: string) {
+    if (!process.env.CLOUDFLARE_TURNSTILE_SECRET_KEY) {
+      return
+    }
+
     if (!token) {
       throw new HttpException(
         { error: 'Bot verification is required' },
         HttpStatus.BAD_REQUEST,
       )
-    }
-
-    if (!process.env.CLOUDFLARE_TURNSTILE_SECRET_KEY) {
-      return
     }
 
     try {
