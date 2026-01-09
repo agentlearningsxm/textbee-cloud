@@ -107,13 +107,24 @@ jobs:
         if: matrix.variant == 'dev'
         run: |
           mkdir -p android/app/src/dev
-          echo '${{ secrets.GOOGLE_SERVICES_JSON_DEV }}' > android/app/src/dev/google-services.json
+          if [ -n "${{ secrets.GOOGLE_SERVICES_JSON_DEV }}" ]; then
+            echo '${{ secrets.GOOGLE_SERVICES_JSON_DEV }}' > android/app/src/dev/google-services.json
+          else
+            echo "Warning: GOOGLE_SERVICES_JSON_DEV secret is not set."
+            # Create a dummy google-services.json if needed to avoid build failure
+            echo '{"project_info":{"project_number":"0","project_id":"dummy","storage_bucket":"dummy"},"client":[{"client_info":{"mobilesdk_app_id":"dummy","android_client_info":{"package_name":"com.vernu.sms.dev"}},"api_key":[{"current_key":"dummy"}],"services":{"appinvite_service":{"other_platform_oauth_client":[]}}}]}' > android/app/src/dev/google-services.json
+          fi
 
       - name: Create google-services.json for prod
         if: matrix.variant == 'prod'
         run: |
           mkdir -p android/app/src/prod
-          echo '${{ secrets.GOOGLE_SERVICES_JSON_PROD }}' > android/app/src/prod/google-services.json
+          if [ -n "${{ secrets.GOOGLE_SERVICES_JSON_PROD }}" ]; then
+            echo '${{ secrets.GOOGLE_SERVICES_JSON_PROD }}' > android/app/src/prod/google-services.json
+          else
+            echo "Warning: GOOGLE_SERVICES_JSON_PROD secret is not set."
+            echo '{"project_info":{"project_number":"0","project_id":"dummy","storage_bucket":"dummy"},"client":[{"client_info":{"mobilesdk_app_id":"dummy","android_client_info":{"package_name":"com.vernu.sms"}},"api_key":[{"current_key":"dummy"}],"services":{"appinvite_service":{"other_platform_oauth_client":[]}}}]}' > android/app/src/prod/google-services.json
+          fi
 
       - name: Build Android app
         run: |
