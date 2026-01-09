@@ -38,9 +38,15 @@ const SupportFormSchema = z.object({
     message: 'Support category is required',
   }),
   message: z.string().min(1, { message: 'Message is required' }),
-  turnstileToken: z
-    .string()
-    .min(1, { message: 'Please complete the bot verification' }),
+  turnstileToken: z.string().optional(),
+}).refine((data) => {
+  if (process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY && !data.turnstileToken) {
+    return false
+  }
+  return true
+}, {
+  message: 'Please complete the bot verification',
+  path: ['turnstileToken'],
 })
 
 export default function SupportForm() {
@@ -93,7 +99,7 @@ export default function SupportForm() {
     setIsSubmitting(true)
     setErrorMessage(null)
 
-    if (!data.turnstileToken) {
+    if (process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY && !data.turnstileToken) {
       form.setError('turnstileToken', {
         type: 'manual',
         message: 'Please complete the bot verification',

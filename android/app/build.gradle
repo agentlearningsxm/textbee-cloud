@@ -7,6 +7,11 @@ android {
     namespace 'com.vernu.sms'
     compileSdk 34
 
+    buildFeatures {
+        buildConfig true
+        resValues true
+    }
+
     defaultConfig {
         minSdk 24
         targetSdk 34

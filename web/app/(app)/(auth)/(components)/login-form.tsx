@@ -23,9 +23,15 @@ import { useTurnstile } from '@/lib/turnstile'
 const loginSchema = z.object({
   email: z.string().email({ message: 'Invalid email address' }),
   password: z.string().min(1, { message: 'Password is required' }),
-  turnstileToken: z
-    .string()
-    .min(1, { message: 'Please complete the bot verification' }),
+  turnstileToken: z.string().optional(),
+}).refine((data) => {
+  if (process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY && !data.turnstileToken) {
+    return false
+  }
+  return true
+}, {
+  message: 'Please complete the bot verification',
+  path: ['turnstileToken'],
 })
 
 type LoginFormValues = z.infer<typeof loginSchema>
@@ -71,7 +77,7 @@ export default function LoginForm() {
   const onSubmit = async (data: LoginFormValues) => {
     form.clearErrors()
 
-    if (!data.turnstileToken) {
+    if (process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY && !data.turnstileToken) {
       form.setError('turnstileToken', {
         type: 'manual',
         message: 'Please complete the bot verification',

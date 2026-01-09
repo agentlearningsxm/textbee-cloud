@@ -66,7 +66,7 @@ export default function DeleteAccountForm() {
         title: 'Please enter a reason for deletion',
       })
       return
-    } else if (!turnstileToken) {
+    } else if (process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY && !turnstileToken) {
       setTurnstileError('Please complete the bot verification')
       return
     }

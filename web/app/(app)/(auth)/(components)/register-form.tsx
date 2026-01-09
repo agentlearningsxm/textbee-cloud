@@ -31,9 +31,15 @@ const registerSchema = z.object({
     .min(8, { message: 'Password must be at least 8 characters long' }),
   phone: z.string().optional(),
   marketingOptIn: z.boolean().optional().default(true),
-  turnstileToken: z
-    .string()
-    .min(1, { message: 'Please complete the bot verification' }),
+  turnstileToken: z.string().optional(),
+}).refine((data) => {
+  if (process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY && !data.turnstileToken) {
+    return false
+  }
+  return true
+}, {
+  message: 'Please complete the bot verification',
+  path: ['turnstileToken'],
 })
 
 type RegisterFormValues = z.infer<typeof registerSchema>
@@ -82,7 +88,7 @@ export default function RegisterForm() {
   const onSubmit = async (data: RegisterFormValues) => {
     form.clearErrors()
 
-    if (!data.turnstileToken) {
+    if (process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY && !data.turnstileToken) {
       form.setError('turnstileToken', {
         type: 'manual',
         message: 'Please complete the bot verification',

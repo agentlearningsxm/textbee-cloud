@@ -12,10 +12,7 @@ export class TurnstileService {
     }
 
     if (!process.env.CLOUDFLARE_TURNSTILE_SECRET_KEY) {
-      throw new HttpException(
-        { error: 'Turnstile secret key is not configured' },
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      )
+      return
     }
 
     try {

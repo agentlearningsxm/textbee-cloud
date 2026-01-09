@@ -1,0 +1,14 @@
+{
+    "java.jdt.ls.java.home": "C:\\Users\\setyw\\.jdks\\jbr-17.0.14",
+    "java.configuration.runtimes": [
+        {
+            "name": "JavaSE-17",
+            "path": "C:\\Users\\setyw\\.jdks\\jbr-17.0.14",
+            "default": true
+        },
+        {
+            "name": "JavaSE-1.8",
+            "path": "C:\\Users\\setyw\\Java\\java-1.8.0-openjdk-1.8.0.392-1.b08.redhat.windows.x86_64"
+        }
+    ]
+}

@@ -33,9 +33,15 @@ import { useTurnstile } from '@/lib/turnstile'
 
 const requestPasswordResetSchema = z.object({
   email: z.string().email({ message: 'Invalid email address' }),
-  turnstileToken: z
-    .string()
-    .min(1, { message: 'Please complete the bot verification' }),
+  turnstileToken: z.string().optional(),
+}).refine((data) => {
+  if (process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY && !data.turnstileToken) {
+    return false
+  }
+  return true
+}, {
+  message: 'Please complete the bot verification',
+  path: ['turnstileToken'],
 })
 
 type RequestPasswordResetFormValues = z.infer<typeof requestPasswordResetSchema>
@@ -80,7 +86,7 @@ export default function RequestPasswordResetForm() {
   ) => {
     form.clearErrors()
 
-    if (!data.turnstileToken) {
+    if (process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY && !data.turnstileToken) {
       form.setError('turnstileToken', {
         type: 'manual',
         message: 'Please complete the bot verification',

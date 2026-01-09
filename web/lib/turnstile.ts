@@ -101,8 +101,6 @@ export const useTurnstile = ({
 
   useEffect(() => {
     if (!siteKey) {
-      setError('Turnstile site key is not configured')
-      onErrorRef.current?.('Turnstile site key is not configured')
       return
     }
 
