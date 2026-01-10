@@ -7,6 +7,7 @@ import ApiKeys from './(components)/api-keys'
 import { useSession } from 'next-auth/react'
 import { HomeIcon, ArrowUpRightIcon } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { Routes } from '@/config/routes'
 
 export default function DashboardPage() {
   const { data: session } = useSession()
