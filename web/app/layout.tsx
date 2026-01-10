@@ -8,10 +8,8 @@ import { Session } from 'next-auth'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 
-export const metadata: Metadata = {
-  title: 'textbee.dev - sms gateway - dashboard',
-
-  metadataBase: new URL('https://textbee.dev'),
+title: 'TextBee - Self-hosted SMS Gateway',
+  description: 'Your private SMS gateway dashboard',
 }
 
 export default async function RootLayout({ children }: PropsWithChildren) {
