@@ -4,6 +4,7 @@ import {
   HttpException,
   HttpStatus,
   Injectable,
+  Logger,
 } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { UsersService } from '../../users/users.service'
@@ -13,11 +14,12 @@ import * as bcrypt from 'bcryptjs'
 @Injectable()
 // Guard for authenticating users by either jwt token or api key
 export class AuthGuard implements CanActivate {
+  private readonly logger = new Logger(AuthGuard.name)
   constructor(
     private jwtService: JwtService,
     private usersService: UsersService,
     private authService: AuthService,
-  ) {}
+  ) { }
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest()
@@ -41,9 +43,22 @@ export class AuthGuard implements CanActivate {
         $or: [{ revokedAt: null }, { revokedAt: { $exists: false } }],
       })
 
-      if (apiKey && bcrypt.compareSync(apiKeyString, apiKey.hashedApiKey)) {
-        userId = apiKey.user
-        request.apiKey = apiKey
+      if (apiKey) {
+        if (bcrypt.compareSync(apiKeyString, apiKey.hashedApiKey)) {
+          userId = apiKey.user
+          request.apiKey = apiKey
+          this.logger.debug(`API Key matched for user: ${userId}`)
+        } else {
+          this.logger.warn(`API Key bcrypt comparison failed for prefix: ${apiKeyString.substr(0, 17)}`)
+        }
+      } else {
+        this.logger.warn(`No API Key found in DB for prefix: ${apiKeyString.substr(0, 17)}`)
+      }
+    } else {
+      if (request.headers.authorization) {
+        this.logger.warn('Authorization header present but not Bearer or invalid')
+      } else {
+        this.logger.warn('No authentication method provided (no Bearer token and no x-api-key)')
       }
     }
 
