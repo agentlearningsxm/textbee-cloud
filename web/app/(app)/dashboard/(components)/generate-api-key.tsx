@@ -151,7 +151,7 @@ export default function GenerateApiKey() {
                     href={Routes.downloadAndroidApp}
                     className='text-primary hover:underline'
                   >
-                    Download from Dashboard
+                    the download page
                   </a>{' '}
                   and install it.
                 </p>
