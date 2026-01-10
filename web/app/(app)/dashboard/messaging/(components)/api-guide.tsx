@@ -35,7 +35,7 @@ export default function ApiGuide() {
           language: 'javascript',
           code: `import axios from 'axios'
 
-const BASE_URL = 'https://api.textbee.dev/api/v1'
+const BASE_URL = 'https://textbee-cloud.onrender.com/api/v1'
 const API_KEY = 'YOUR_API_KEY'
 const DEVICE_ID = 'YOUR_DEVICE_ID'
 
@@ -104,7 +104,7 @@ print(response.json())`
           language: 'javascript',
           code: `import axios from 'axios'
 
-const BASE_URL = 'https://api.textbee.dev/api/v1'
+const BASE_URL = 'https://textbee-cloud.onrender.com/api/v1'
 const API_KEY = 'YOUR_API_KEY'
 const DEVICE_ID = 'YOUR_DEVICE_ID'
 const SMS_ID = 'YOUR_SMS_ID'
@@ -163,7 +163,7 @@ print(response.json())`
           language: 'javascript',
           code: `import axios from 'axios'
 
-const BASE_URL = 'https://api.textbee.dev/api/v1'
+const BASE_URL = 'https://textbee-cloud.onrender.com/api/v1'
 const API_KEY = 'YOUR_API_KEY'
 const DEVICE_ID = 'YOUR_DEVICE_ID'
 const BATCH_ID = 'YOUR_BATCH_ID'
