@@ -149,11 +149,9 @@ export default function GenerateApiKey() {
                   Download the APK from{' '}
                   <a
                     href={Routes.downloadAndroidApp}
-                    target='_blank'
-                    rel='noopener noreferrer'
                     className='text-primary hover:underline'
                   >
-                    {Routes.downloadAndroidApp}
+                    Download from Dashboard
                   </a>{' '}
                   and install it.
                 </p>

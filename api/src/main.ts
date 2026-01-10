@@ -67,9 +67,13 @@ async function bootstrap() {
     clientC509CertUrl: process.env.FIREBASE_CLIENT_C509_CERT_URL,
   }
 
-  firebase.initializeApp({
-    credential: firebase.credential.cert(firebaseConfig),
-  })
+  if (process.env.FIREBASE_PROJECT_ID) {
+    firebase.initializeApp({
+      credential: firebase.credential.cert(firebaseConfig),
+    })
+  } else {
+    logger.warn('Firebase Project ID not found. Firebase features will be disabled.')
+  }
 
   app.use(
     '/api/v1/billing/webhook/polar',

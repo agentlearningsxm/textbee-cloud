@@ -76,13 +76,13 @@ export default function GetStartedCard() {
                 <p className="text-sm text-muted-foreground">
                   Install the TextBee app on your Android device
                 </p>
-                <Button variant="outline" size="sm" className="mt-2" onClick={() => window.open('https://dl.textbee.dev', '_blank')}>
+                <Button variant="outline" size="sm" className="mt-2" onClick={() => window.location.href = Routes.downloadAndroidApp}>
                   <Download className="mr-2 h-4 w-4" />
                   Download App APK
                 </Button>
               </div>
             </div>
-            
+
             <div className="flex items-start space-x-3">
               <div className="flex h-7 w-7 items-center justify-center rounded-full bg-primary/20 text-primary">
                 2

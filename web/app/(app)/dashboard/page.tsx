@@ -19,7 +19,7 @@ export default function DashboardPage() {
             <HomeIcon className='h-6 w-6 text-primary' />
             <h2 className='text-3xl font-bold tracking-tight'>Dashboard</h2>
           </div>
-          <Button variant="outline" size="sm" onClick={() => window.open('https://textbee.dev/quickstart', '_blank')}>
+          <Button variant="outline" size="sm" onClick={() => window.open(Routes.downloadAndroidApp, '_blank')}>
             <ArrowUpRightIcon className="mr-2 h-4 w-4" />
             Quick Start
           </Button>
