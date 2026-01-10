@@ -146,6 +146,39 @@ export default function DownloadPage() {
           </p>
         </div>
 
+        {/* Selfhosted APK - Primary Download */}
+        <div className='mb-8'>
+          <div className='bg-gradient-to-r from-brand-600 to-brand-700 rounded-xl shadow-lg overflow-hidden'>
+            <div className='p-6 sm:p-8'>
+              <div className='flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4'>
+                <div className='text-white'>
+                  <div className='flex items-center gap-2 mb-2'>
+                    <Badge className='bg-white/20 text-white border-white/30'>
+                      Selfhosted Edition
+                    </Badge>
+                  </div>
+                  <h2 className='text-2xl font-bold mb-2'>
+                    TextBee Selfhosted App
+                  </h2>
+                  <p className='text-brand-100'>
+                    Pre-configured to connect to your private server. Download this version to use with your dashboard.
+                  </p>
+                </div>
+                <Button
+                  size='lg'
+                  className='bg-white text-brand-700 hover:bg-brand-50'
+                  asChild
+                >
+                  <Link href='/textbee-selfhosted.apk' download>
+                    <ArrowDownToLine className='mr-2 h-5 w-5' />
+                    Download APK
+                  </Link>
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* Latest release section */}
         <div className='mb-16'>
           <div className='bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden'>
@@ -153,8 +186,8 @@ export default function DownloadPage() {
               <div className='flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6'>
                 <div>
                   <div className='flex items-center gap-2 mb-2'>
-                    <Badge className='bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300 hover:bg-green-100'>
-                      Latest Version
+                    <Badge className='bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300 hover:bg-gray-100'>
+                      Official TextBee (Different Server)
                     </Badge>
                     {latestRelease?.prerelease && (
                       <Badge
