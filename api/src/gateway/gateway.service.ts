@@ -38,20 +38,26 @@ export class GatewayService {
     input: RegisterDeviceInputDTO,
     user: User,
   ): Promise<any> {
-    const device = await this.deviceModel.findOne({
-      user: user._id,
-      model: input.model,
-      buildId: input.buildId,
-    })
-
-    if (device && device.appVersionCode <= 11) {
-      return await this.updateDevice(device._id.toString(), {
+    // Use findOneAndUpdate with upsert to prevent duplicate devices
+    // This will update existing device or create new one if not found
+    const device = await this.deviceModel.findOneAndUpdate(
+      {
+        user: user._id,
+        model: input.model,
+        buildId: input.buildId,
+      },
+      {
         ...input,
+        user: user._id,
         enabled: true,
-      })
-    } else {
-      return await this.deviceModel.create({ ...input, user })
-    }
+      },
+      {
+        upsert: true,  // Create if not exists
+        new: true,     // Return the updated/created document
+        setDefaultsOnInsert: true,  // Apply schema defaults on insert
+      }
+    )
+    return device
   }
 
   async getDevicesForUser(user: User): Promise<any> {

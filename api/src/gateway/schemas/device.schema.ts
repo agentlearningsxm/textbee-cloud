@@ -52,3 +52,7 @@ export class Device {
 }
 
 export const DeviceSchema = SchemaFactory.createForClass(Device)
+
+// TODO: Add unique compound index AFTER cleaning up existing duplicate devices
+// Uncomment after duplicates are removed from MongoDB
+// DeviceSchema.index({ user: 1, model: 1, buildId: 1 }, { unique: true })

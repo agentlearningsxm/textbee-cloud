@@ -387,9 +387,10 @@ export class AuthService {
         HttpStatus.NOT_FOUND,
       )
     }
-    if (apiKey.usageCount > 0) {
+    // Allow deletion if: never used OR already revoked
+    if (apiKey.usageCount > 0 && !apiKey.revokedAt) {
       throw new HttpException(
-        { error: 'Api key cannot be deleted' },
+        { error: 'Active API key with usage history cannot be deleted. Revoke it first.' },
         HttpStatus.BAD_REQUEST,
       )
     }
