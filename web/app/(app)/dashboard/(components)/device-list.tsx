@@ -4,15 +4,16 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { Smartphone, Battery, Signal, Copy } from 'lucide-react'
+import { Smartphone, Battery, Signal, Copy, Trash2 } from 'lucide-react'
 import { useToast } from '@/hooks/use-toast'
 import httpBrowserClient from '@/lib/httpBrowserClient'
 import { ApiEndpoints } from '@/config/api'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { Skeleton } from '@/components/ui/skeleton'
 
 export default function DeviceList() {
   const { toast } = useToast()
+  const queryClient = useQueryClient()
   const {
     isPending,
     error,
@@ -24,6 +25,22 @@ export default function DeviceList() {
         .get(ApiEndpoints.gateway.listDevices())
         .then((res) => res.data),
     // select: (res) => res.data,
+  })
+
+  const deleteDeviceMutation = useMutation({
+    mutationFn: (deviceId: string) =>
+      httpBrowserClient.delete(ApiEndpoints.gateway.deleteDevice(deviceId)),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['devices'] })
+      toast({ title: 'Device deleted successfully' })
+    },
+    onError: (error: any) => {
+      toast({
+        title: 'Failed to delete device',
+        description: error.response?.data?.error || error.message,
+        variant: 'destructive',
+      })
+    },
   })
 
   const handleCopyId = (id: string) => {
@@ -124,6 +141,19 @@ export default function DeviceList() {
                       </div>
                     </div>
                   </div>
+                  <Button
+                    variant='ghost'
+                    size='icon'
+                    className='h-8 w-8 text-destructive hover:text-destructive hover:bg-destructive/10'
+                    onClick={() => {
+                      if (confirm('Are you sure you want to delete this device?')) {
+                        deleteDeviceMutation.mutate(device._id)
+                      }
+                    }}
+                    disabled={deleteDeviceMutation.isPending}
+                  >
+                    <Trash2 className='h-4 w-4' />
+                  </Button>
                 </CardContent>
               </Card>
             ))}
