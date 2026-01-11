@@ -106,8 +106,9 @@ export class GatewayService {
       )
     }
 
-    return {}
-    // return await this.deviceModel.findByIdAndDelete(deviceId)
+    // Actually delete the device
+    await this.deviceModel.findByIdAndDelete(deviceId)
+    return { message: 'Device deleted successfully' }
   }
 
   async sendSMS(deviceId: string, smsData: SendSMSInputDTO): Promise<any> {
