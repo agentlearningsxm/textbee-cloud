@@ -14,6 +14,7 @@
     <uses-permission android:name="android.provider.Telephony.SMS_RECEIVED" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SHORT_SERVICE"/>
     <uses-permission android:name="android.permission.INTERNET" />
     <application
         android:name=".SMSGatewayApplication"
@@ -41,7 +42,8 @@
         <service
             android:name=".services.StickyNotificationService"
             android:enabled="true"
-            android:exported="false">
+            android:exported="false"
+            android:foregroundServiceType="shortService">
         </service>
         <receiver
             android:name=".receivers.SMSBroadcastReceiver"
