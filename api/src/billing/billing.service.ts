@@ -400,18 +400,30 @@ export class BillingService {
   }
 
   private getEffectiveLimits(subscription: any, plan: any) {
+    // Default limits for selfhosted (unlimited = -1)
+    const defaultLimits = {
+      dailyLimit: -1,
+      monthlyLimit: -1,
+      bulkSendLimit: 1000,
+    }
+
+    // If no plan exists (selfhosted without seeded plans), use unlimited defaults
+    if (!plan) {
+      return defaultLimits
+    }
+
     if (!subscription) {
       return {
-        dailyLimit: plan.dailyLimit,
-        monthlyLimit: plan.monthlyLimit,
-        bulkSendLimit: plan.bulkSendLimit,
+        dailyLimit: plan.dailyLimit ?? defaultLimits.dailyLimit,
+        monthlyLimit: plan.monthlyLimit ?? defaultLimits.monthlyLimit,
+        bulkSendLimit: plan.bulkSendLimit ?? defaultLimits.bulkSendLimit,
       }
     }
 
     return {
-      dailyLimit: subscription.customDailyLimit ?? plan.dailyLimit,
-      monthlyLimit: subscription.customMonthlyLimit ?? plan.monthlyLimit,
-      bulkSendLimit: subscription.customBulkSendLimit ?? plan.bulkSendLimit,
+      dailyLimit: subscription.customDailyLimit ?? plan.dailyLimit ?? defaultLimits.dailyLimit,
+      monthlyLimit: subscription.customMonthlyLimit ?? plan.monthlyLimit ?? defaultLimits.monthlyLimit,
+      bulkSendLimit: subscription.customBulkSendLimit ?? plan.bulkSendLimit ?? defaultLimits.bulkSendLimit,
     }
   }
 
@@ -549,6 +561,11 @@ export class BillingService {
       }
 
       const effectiveLimits = this.getEffectiveLimits(subscription, plan)
+
+      // For selfhosted without plans, allow unlimited usage
+      if (!plan) {
+        return true
+      }
 
       if (plan.name?.startsWith('custom')) {
         // For custom plans, check if custom limits are set to unlimited (-1)

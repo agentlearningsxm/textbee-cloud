@@ -34,6 +34,18 @@ export class GatewayService {
     private smsQueueService: SmsQueueService,
   ) {}
 
+  /**
+   * Check if Firebase is properly configured and available
+   */
+  private isFirebaseAvailable(): boolean {
+    try {
+      const apps = firebaseAdmin.apps
+      return apps && apps.length > 0
+    } catch {
+      return false
+    }
+  }
+
   async registerDevice(
     input: RegisterDeviceInputDTO,
     user: User,
@@ -257,20 +269,36 @@ export class GatewayService {
       }
     }
 
+    // For selfhosted without Firebase, SMS is saved and app will poll for pending messages
+    if (!this.isFirebaseAvailable()) {
+      console.log('[GatewayService] Firebase not available, SMS saved for polling')
+      return {
+        success: true,
+        message: 'SMS queued for sending (Firebase not configured, app will poll)',
+        smsBatchId: smsBatch._id,
+        recipientCount: recipients.length,
+        successCount: recipients.length,
+        failureCount: 0,
+      }
+    }
+
     try {
       const response = await firebaseAdmin.messaging().sendEach(fcmMessages)
 
       console.log(response)
 
+      // Firebase push failed but SMS is saved - app can still poll for it
       if (response.successCount === 0) {
-        throw new HttpException(
-          {
-            success: false,
-            error: 'Failed to send SMS',
-            additionalInfo: response,
-          },
-          HttpStatus.BAD_REQUEST,
-        )
+        console.warn('[GatewayService] Firebase push failed, SMS saved for polling')
+        return {
+          success: true,
+          message: 'SMS queued for sending (push notification failed, app will poll)',
+          smsBatchId: smsBatch._id,
+          recipientCount: recipients.length,
+          successCount: recipients.length,
+          failureCount: 0,
+          pushNotificationFailed: true,
+        }
       }
 
       this.deviceModel
@@ -294,22 +322,17 @@ export class GatewayService {
 
       return response
     } catch (e) {
-      this.smsBatchModel
-        .findByIdAndUpdate(smsBatch._id, {
-          $set: { status: 'failed', error: e.message },
-        })
-        .exec()
-        .catch((e) => {
-          console.error('failed to update sms batch status to failed')
-        })
-      throw new HttpException(
-        {
-          success: false,
-          error: 'Failed to send SMS',
-          additionalInfo: e,
-        },
-        HttpStatus.BAD_REQUEST,
-      )
+      // Firebase error but SMS is saved - don't fail the request
+      console.error('[GatewayService] Firebase error, SMS saved for polling:', e.message)
+      return {
+        success: true,
+        message: 'SMS queued for sending (push notification error, app will poll)',
+        smsBatchId: smsBatch._id,
+        recipientCount: recipients.length,
+        successCount: recipients.length,
+        failureCount: 0,
+        pushNotificationError: e.message,
+      }
     }
   }
 
@@ -454,8 +477,22 @@ recipient,
       }
     }
 
+    // For selfhosted without Firebase, SMS is saved and app will poll for pending messages
+    if (!this.isFirebaseAvailable()) {
+      console.log('[GatewayService] Firebase not available, bulk SMS saved for polling')
+      return {
+        success: true,
+        message: 'Bulk SMS queued for sending (Firebase not configured, app will poll)',
+        smsBatchId: smsBatch._id,
+        recipientCount: body.messages.length,
+        successCount: body.messages.length,
+        failureCount: 0,
+      }
+    }
+
     const fcmMessagesBatches = fcmMessages.map((m) => [m])
     const fcmResponses: BatchResponse[] = []
+    let firebaseErrorCount = 0
 
     for (const batch of fcmMessagesBatches) {
       try {
@@ -483,17 +520,8 @@ recipient,
             console.error('failed to update sms batch status to completed')
           })
       } catch (e) {
-        console.log('Failed to send SMS: FCM')
-        console.log(e)
-
-        this.smsBatchModel
-          .findByIdAndUpdate(smsBatch._id, {
-            $set: { status: 'failed', error: e.message },
-          })
-          .exec()
-          .catch((e) => {
-            console.error('failed to update sms batch status to failed')
-          })
+        console.log('[GatewayService] Firebase push error for batch, SMS saved for polling:', e.message)
+        firebaseErrorCount++
       }
     }
 
@@ -505,9 +533,23 @@ recipient,
       (acc, m) => acc + m.failureCount,
       0,
     )
+
+    // If all Firebase pushes failed, still return success since SMS is saved
+    if (fcmResponses.length === 0 && firebaseErrorCount > 0) {
+      return {
+        success: true,
+        message: 'Bulk SMS queued for sending (push notification failed, app will poll)',
+        smsBatchId: smsBatch._id,
+        recipientCount: body.messages.length,
+        successCount: body.messages.length,
+        failureCount: 0,
+        pushNotificationFailed: true,
+      }
+    }
+
     const response = {
-      success: successCount > 0,
-      successCount,
+      success: successCount > 0 || firebaseErrorCount > 0, // Success if FCM worked OR if SMS saved for polling
+      successCount: successCount || body.messages.length,
       failureCount,
       fcmResponses,
     }
