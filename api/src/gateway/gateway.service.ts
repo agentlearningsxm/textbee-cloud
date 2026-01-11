@@ -932,7 +932,7 @@ const updatedSms = await this.smsModel.findByIdAndUpdate(
     }
 
     // Find all SMS messages that belong to this batch
-    const smsMessages = await this.smsModel.find({ 
+    const smsMessages = await this.smsModel.find({
       smsBatch: new Types.ObjectId(smsBatchId),
       device: smsBatch.device
     });
@@ -942,5 +942,49 @@ const updatedSms = await this.smsModel.findByIdAndUpdate(
       batch: smsBatch,
       messages: smsMessages
     };
+  }
+
+  /**
+   * Get pending SMS messages for a device (for polling when Firebase is unavailable)
+   */
+  async getPendingSMS(deviceId: string, limit = 10): Promise<any> {
+    const device = await this.deviceModel.findById(deviceId)
+
+    if (!device) {
+      throw new HttpException(
+        {
+          success: false,
+          error: 'Device does not exist',
+        },
+        HttpStatus.BAD_REQUEST,
+      )
+    }
+
+    // Find pending SMS messages for this device
+    const pendingSMS = await this.smsModel
+      .find({
+        device: device._id,
+        type: SMSType.SENT,
+        status: 'pending',
+      })
+      .sort({ createdAt: 1 }) // Oldest first
+      .limit(limit)
+      .lean()
+
+    // Format for mobile app consumption
+    const messages = pendingSMS.map((sms) => ({
+      smsId: sms._id,
+      smsBatchId: sms.smsBatch,
+      message: sms.message,
+      recipients: [sms.recipient],
+      // Legacy fields for backward compatibility
+      smsBody: sms.message,
+      receivers: [sms.recipient],
+    }))
+
+    return {
+      count: messages.length,
+      messages,
+    }
   }
 }

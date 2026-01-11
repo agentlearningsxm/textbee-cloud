@@ -184,4 +184,17 @@ export class GatewayController {
     const data = await this.gatewayService.getSmsBatchById(smsBatchId);
     return { data };
   }
+
+  @ApiOperation({ summary: 'Get pending SMS messages for a device (for polling)' })
+  @ApiQuery({ name: 'limit', required: false, type: Number, description: 'Max number of pending SMS to return (default: 10)' })
+  @UseGuards(AuthGuard, CanModifyDevice)
+  @Get('/devices/:id/pending-sms')
+  async getPendingSMS(
+    @Param('id') deviceId: string,
+    @Request() req,
+  ) {
+    const limit = req.query.limit ? Math.min(parseInt(req.query.limit, 10), 50) : 10;
+    const data = await this.gatewayService.getPendingSMS(deviceId, limit);
+    return { data };
+  }
 }
