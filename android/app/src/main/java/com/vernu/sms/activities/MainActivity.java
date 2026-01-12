@@ -214,7 +214,7 @@ public class MainActivity extends AppCompatActivity {
         });
         scanQRBtn.setOnClickListener(view -> {
             IntentIntegrator intentIntegrator = new IntentIntegrator(MainActivity.this);
-            intentIntegrator.setPrompt("Go to textbee.dev/dashboard and click Register Device to generate QR Code");
+            intentIntegrator.setPrompt("Go to textbee-cloud.vercel.app/dashboard and click Register Device to generate QR Code");
             intentIntegrator.setRequestCode(SCAN_QR_REQUEST_CODE);
             intentIntegrator.initiateScan();
         });
@@ -222,7 +222,7 @@ public class MainActivity extends AppCompatActivity {
         checkUpdatesBtn.setOnClickListener(view -> {
             String versionInfo = BuildConfig.VERSION_NAME + "(" + BuildConfig.VERSION_CODE + ")";
             String encodedVersionInfo = android.net.Uri.encode(versionInfo);
-            String downloadUrl = "https://textbee.dev/download?currentVersion=" + encodedVersionInfo;
+            String downloadUrl = "https://textbee-cloud.vercel.app/download?currentVersion=" + encodedVersionInfo;
             Intent browserIntent = new Intent(Intent.ACTION_VIEW, android.net.Uri.parse(downloadUrl));
             startActivity(browserIntent);
         });

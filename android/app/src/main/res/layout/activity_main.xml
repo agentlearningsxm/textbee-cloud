@@ -500,7 +500,7 @@
                             android:id="@+id/dashboardLinkText"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Go to https://textbee.dev/dashboard"
+                            android:text="Go to https://textbee-cloud.vercel.app/dashboard"
                             android:textColor="?attr/colorPrimary"
                             android:autoLink="web"
                             android:linksClickable="true"
