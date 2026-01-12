@@ -54,7 +54,7 @@ console.log(response.data)`
           language: 'python',
           code: `import requests
 
-BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://api.textbee.dev/api/v1'
+BASE_URL = 'https://textbee-cloud.onrender.com/api/v1'
 API_KEY = 'YOUR_API_KEY'
 DEVICE_ID = 'YOUR_DEVICE_ID'
 
@@ -71,7 +71,7 @@ print(response.json())`
         },
         curl: {
           language: 'bash',
-          code: `curl -X POST "${process.env.NEXT_PUBLIC_API_BASE_URL || 'https://api.textbee.dev/api/v1'}/gateway/devices/YOUR_DEVICE_ID/send-sms" \\
+          code: `curl -X POST "https://textbee-cloud.onrender.com/api/v1/gateway/devices/YOUR_DEVICE_ID/send-sms" \\
   -H 'x-api-key: YOUR_API_KEY' \\
   -H 'Content-Type: application/json' \\
   -d '{
@@ -120,7 +120,7 @@ console.log(response.data)`
           language: 'python',
           code: `import requests
 
-BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://api.textbee.dev/api/v1'
+BASE_URL = 'https://textbee-cloud.onrender.com/api/v1'
 API_KEY = 'YOUR_API_KEY'
 DEVICE_ID = 'YOUR_DEVICE_ID'
 SMS_ID = 'YOUR_SMS_ID'
@@ -134,7 +134,7 @@ print(response.json())`
         },
         curl: {
           language: 'bash',
-          code: `curl -X GET "${process.env.NEXT_PUBLIC_API_BASE_URL || 'https://api.textbee.dev/api/v1'}/gateway/devices/YOUR_DEVICE_ID/sms/YOUR_SMS_ID" \\
+          code: `curl -X GET "https://textbee-cloud.onrender.com/api/v1/gateway/devices/YOUR_DEVICE_ID/sms/YOUR_SMS_ID" \\
   -H 'x-api-key: YOUR_API_KEY'`
         }
       },
@@ -179,7 +179,7 @@ console.log(response.data)`
           language: 'python',
           code: `import requests
 
-BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://api.textbee.dev/api/v1'
+BASE_URL = 'https://textbee-cloud.onrender.com/api/v1'
 API_KEY = 'YOUR_API_KEY'
 DEVICE_ID = 'YOUR_DEVICE_ID'
 BATCH_ID = 'YOUR_BATCH_ID'
@@ -193,7 +193,7 @@ print(response.json())`
         },
         curl: {
           language: 'bash',
-          code: `curl -X GET "${process.env.NEXT_PUBLIC_API_BASE_URL || 'https://api.textbee.dev/api/v1'}/gateway/devices/YOUR_DEVICE_ID/sms-batch/YOUR_BATCH_ID" \\
+          code: `curl -X GET "https://textbee-cloud.onrender.com/api/v1/gateway/devices/YOUR_DEVICE_ID/sms-batch/YOUR_BATCH_ID" \\
   -H 'x-api-key: YOUR_API_KEY'`
         }
       },
@@ -258,7 +258,7 @@ print(response.json())`
         <CollapsibleContent className="mt-4">
           <div className="flex items-center justify-between mb-4">
             <p className="text-sm text-muted-foreground">Integrate SMS capabilities into your applications</p>
-            <Link href={`${process.env.NEXT_PUBLIC_API_BASE_URL?.replace('/api/v1', '') || 'https://api.textbee.dev'}/`} target="_blank">
+            <Link href={`https://textbee-cloud.onrender.com/`} target="_blank">
               <Button variant="outline" size="sm" className="flex items-center gap-1">
                 <ExternalLink className="h-4 w-4" />
                 <span>Full API Docs</span>
@@ -402,7 +402,7 @@ print(response.json())`
                     <p className="text-sm text-muted-foreground">
                       For more details, see the full API documentation.
                     </p>
-                    <Link href={`${process.env.NEXT_PUBLIC_API_BASE_URL?.replace('/api/v1', '') || 'https://api.textbee.dev'}/#${endpoint.id}`} target="_blank">
+                    <Link href={`https://textbee-cloud.onrender.com/#${endpoint.id}`} target="_blank">
                       <Button size="sm" variant="outline">
                         View Details
                         <ArrowRight className="ml-2 h-4 w-4" />
