@@ -8,7 +8,8 @@ import { Session } from 'next-auth'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 
-title: 'TextBee - Self-hosted SMS Gateway',
+export const metadata: Metadata = {
+  title: 'TextBee - Self-hosted SMS Gateway',
   description: 'Your private SMS gateway dashboard',
 }
 
