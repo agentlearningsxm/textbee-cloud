@@ -1,16 +1,12 @@
 package com.vernu.sms.services;
 
 import android.app.*;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.os.Handler;
+import android.os.Build;
 import android.os.IBinder;
-import android.os.Looper;
-import android.provider.Telephony;
+import android.os.SystemClock;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
 
@@ -20,7 +16,7 @@ import com.vernu.sms.activities.MainActivity;
 import com.vernu.sms.dtos.PendingSMSResponseDTO;
 import com.vernu.sms.helpers.SMSHelper;
 import com.vernu.sms.models.SMSPayload;
-import com.vernu.sms.receivers.SMSBroadcastReceiver;
+import com.vernu.sms.receivers.AlarmReceiver;
 import com.vernu.sms.AppConstants;
 import com.vernu.sms.helpers.SharedPreferenceHelper;
 
@@ -28,48 +24,69 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+/**
+ * Foreground service that polls for pending SMS messages using AlarmManager.
+ * Uses setExactAndAllowWhileIdle() to survive Doze mode on Android 6+.
+ */
 public class StickyNotificationService extends Service {
 
     private static final String TAG = "StickyNotificationService";
     private static final long POLLING_INTERVAL_MS = 15000; // Poll every 15 seconds
 
-    private Handler pollingHandler;
-    private Runnable pollingRunnable;
+    private AlarmManager alarmManager;
+    private PendingIntent alarmPendingIntent;
     private boolean isPolling = false;
 
     @Override
     public IBinder onBind(Intent intent) {
-        Log.i(TAG, "Service onBind " + intent.getAction());
+        Log.i(TAG, "Service onBind " + (intent != null ? intent.getAction() : "null"));
         return null;
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
-        Log.i(TAG, "Service Started");
+        Log.i(TAG, "Service onCreate");
+        alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+    }
 
-        // Only show notification if enabled in preferences
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        Log.i(TAG, "onStartCommand - startId: " + startId + ", action: " + (intent != null ? intent.getAction() : "null"));
+
+        // Check if sticky notification is enabled
         boolean stickyNotificationEnabled = SharedPreferenceHelper.getSharedPreferenceBoolean(
                 getApplicationContext(),
                 AppConstants.SHARED_PREFS_STICKY_NOTIFICATION_ENABLED_KEY,
                 false
         );
 
-        if (stickyNotificationEnabled) {
-            Notification notification = createNotification();
-            startForeground(1, notification);
-            Log.i(TAG, "Started foreground service with sticky notification");
+        if (!stickyNotificationEnabled) {
+            Log.i(TAG, "Sticky notification disabled, stopping service");
+            stopPolling();
+            stopSelf();
+            return START_NOT_STICKY;
+        }
 
-            // Start polling for pending SMS
+        // Start as foreground service with notification
+        Notification notification = createNotification();
+        startForeground(1, notification);
+        Log.i(TAG, "Started foreground service with sticky notification");
+
+        // Handle alarm-triggered poll
+        if (intent != null && AlarmReceiver.ACTION_POLL_SMS.equals(intent.getAction())) {
+            Log.d(TAG, "Received poll trigger from AlarmReceiver");
+            pollForPendingSMS();
+        }
+
+        // Start or ensure polling is active
+        if (!isPolling) {
             startPolling();
         } else {
-            Log.i(TAG, "Sticky notification disabled by user preference");
+            // Re-schedule next poll (service may have been recreated)
+            scheduleNextPoll();
         }
-    }
 
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.i(TAG, "Received start id " + startId + ": " + intent);
         return START_STICKY;
     }
 
@@ -81,7 +98,30 @@ public class StickyNotificationService extends Service {
     }
 
     /**
-     * Start polling for pending SMS messages
+     * Android 15+ timeout handler for dataSync foreground services.
+     * dataSync services have a 6-hour maximum runtime per 24-hour period.
+     */
+    public void onTimeout(int startId) {
+        Log.w(TAG, "Service timeout reached (Android 15+), restarting service");
+
+        // Stop current polling
+        stopPolling();
+        stopForeground(STOP_FOREGROUND_REMOVE);
+
+        // Restart the service
+        Intent restartIntent = new Intent(this, StickyNotificationService.class);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForegroundService(restartIntent);
+        } else {
+            startService(restartIntent);
+        }
+
+        stopSelf(startId);
+    }
+
+    /**
+     * Start polling for pending SMS messages using AlarmManager.
+     * AlarmManager.setExactAndAllowWhileIdle() survives Doze mode.
      */
     private void startPolling() {
         if (isPolling) {
@@ -89,35 +129,95 @@ public class StickyNotificationService extends Service {
             return;
         }
 
-        pollingHandler = new Handler(Looper.getMainLooper());
-        pollingRunnable = new Runnable() {
-            @Override
-            public void run() {
-                pollForPendingSMS();
-                if (isPolling) {
-                    pollingHandler.postDelayed(this, POLLING_INTERVAL_MS);
-                }
-            }
-        };
-
         isPolling = true;
-        pollingHandler.post(pollingRunnable);
-        Log.i(TAG, "Started polling for pending SMS every " + (POLLING_INTERVAL_MS / 1000) + " seconds");
+
+        // Do immediate first poll
+        pollForPendingSMS();
+
+        // Schedule subsequent polls using AlarmManager
+        scheduleNextPoll();
+
+        Log.i(TAG, "Started AlarmManager-based polling every " + (POLLING_INTERVAL_MS / 1000) + " seconds");
     }
 
     /**
-     * Stop polling for pending SMS
+     * Schedule the next poll using AlarmManager.setExactAndAllowWhileIdle().
+     * This method survives Doze mode and will wake the device if needed.
+     */
+    private void scheduleNextPoll() {
+        if (!isPolling) {
+            Log.d(TAG, "Not scheduling next poll - polling is stopped");
+            return;
+        }
+
+        Intent intent = new Intent(this, AlarmReceiver.class);
+        intent.setAction(AlarmReceiver.ACTION_POLL_SMS);
+
+        alarmPendingIntent = PendingIntent.getBroadcast(
+                this,
+                0,
+                intent,
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
+        );
+
+        long triggerAtMillis = SystemClock.elapsedRealtime() + POLLING_INTERVAL_MS;
+
+        // Use appropriate alarm method based on Android version
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            // Android 12+ requires checking if exact alarms are allowed
+            if (alarmManager.canScheduleExactAlarms()) {
+                alarmManager.setExactAndAllowWhileIdle(
+                        AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                        triggerAtMillis,
+                        alarmPendingIntent
+                );
+                Log.d(TAG, "Scheduled exact alarm for next poll in " + (POLLING_INTERVAL_MS / 1000) + " seconds");
+            } else {
+                // Fallback to inexact alarm if exact alarms not allowed
+                alarmManager.setAndAllowWhileIdle(
+                        AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                        triggerAtMillis,
+                        alarmPendingIntent
+                );
+                Log.w(TAG, "Exact alarms not allowed, using inexact alarm (may be less precise in Doze)");
+            }
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            // Android 6-11: setExactAndAllowWhileIdle is available without permission check
+            alarmManager.setExactAndAllowWhileIdle(
+                    AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                    triggerAtMillis,
+                    alarmPendingIntent
+            );
+            Log.d(TAG, "Scheduled exact alarm for next poll in " + (POLLING_INTERVAL_MS / 1000) + " seconds");
+        } else {
+            // Android 5 and below: use setExact
+            alarmManager.setExact(
+                    AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                    triggerAtMillis,
+                    alarmPendingIntent
+            );
+            Log.d(TAG, "Scheduled exact alarm for next poll in " + (POLLING_INTERVAL_MS / 1000) + " seconds");
+        }
+    }
+
+    /**
+     * Stop polling for pending SMS and cancel any pending alarms.
      */
     private void stopPolling() {
         isPolling = false;
-        if (pollingHandler != null && pollingRunnable != null) {
-            pollingHandler.removeCallbacks(pollingRunnable);
+
+        if (alarmManager != null && alarmPendingIntent != null) {
+            alarmManager.cancel(alarmPendingIntent);
+            alarmPendingIntent = null;
+            Log.d(TAG, "Cancelled pending alarm");
         }
+
         Log.i(TAG, "Stopped polling for pending SMS");
     }
 
     /**
-     * Poll the server for pending SMS and send them
+     * Poll the server for pending SMS and send them.
+     * After completion (success or failure), schedules the next poll.
      */
     private void pollForPendingSMS() {
         String deviceId = SharedPreferenceHelper.getSharedPreferenceString(
@@ -129,6 +229,7 @@ public class StickyNotificationService extends Service {
 
         if (deviceId.isEmpty() || apiKey.isEmpty() || !gatewayEnabled) {
             Log.d(TAG, "Skipping poll - device not configured or gateway disabled");
+            scheduleNextPoll(); // Still schedule next poll
             return;
         }
 
@@ -140,32 +241,35 @@ public class StickyNotificationService extends Service {
                     public void onResponse(Call<PendingSMSResponseDTO> call, Response<PendingSMSResponseDTO> response) {
                         if (!response.isSuccessful() || response.body() == null || response.body().data == null) {
                             Log.e(TAG, "Failed to fetch pending SMS: " + response.code());
+                            scheduleNextPoll();
                             return;
                         }
 
                         int count = response.body().data.count;
                         if (count == 0) {
                             Log.d(TAG, "No pending SMS");
-                            return;
+                        } else {
+                            Log.i(TAG, "Found " + count + " pending SMS to send");
+
+                            // Process each pending SMS
+                            for (SMSPayload smsPayload : response.body().data.messages) {
+                                sendSMS(smsPayload);
+                            }
                         }
 
-                        Log.i(TAG, "Found " + count + " pending SMS to send");
-
-                        // Process each pending SMS
-                        for (SMSPayload smsPayload : response.body().data.messages) {
-                            sendSMS(smsPayload);
-                        }
+                        scheduleNextPoll();
                     }
 
                     @Override
                     public void onFailure(Call<PendingSMSResponseDTO> call, Throwable t) {
                         Log.e(TAG, "Error polling for pending SMS: " + t.getMessage());
+                        scheduleNextPoll();
                     }
                 });
     }
 
     /**
-     * Send SMS using the SMS payload
+     * Send SMS using the SMS payload.
      */
     private void sendSMS(SMSPayload smsPayload) {
         if (smsPayload == null) {
@@ -213,35 +317,47 @@ public class StickyNotificationService extends Service {
         }
     }
 
+    /**
+     * Create the foreground notification.
+     */
     private Notification createNotification() {
         String notificationChannelId = "stickyNotificationChannel";
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        NotificationChannel channel = null;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            channel = new NotificationChannel(notificationChannelId, notificationChannelId, NotificationManager.IMPORTANCE_HIGH);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(
+                    notificationChannelId,
+                    "SMS Gateway Service",
+                    NotificationManager.IMPORTANCE_LOW // Low importance = no sound/vibration
+            );
             channel.enableVibration(false);
             channel.setShowBadge(false);
+            channel.setDescription("Keeps the SMS gateway active in background");
             notificationManager.createNotificationChannel(channel);
 
             Intent notificationIntent = new Intent(this, MainActivity.class);
-            PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
+            PendingIntent pendingIntent = PendingIntent.getActivity(
+                    this, 0, notificationIntent,
+                    PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT
+            );
 
             Notification.Builder builder = new Notification.Builder(this, notificationChannelId);
-            return builder.setContentTitle("TextBee Active")
-                    .setContentText("SMS gateway service is active")
+            return builder
+                    .setContentTitle("TextBee Active")
+                    .setContentText("SMS gateway polling every 15 seconds")
                     .setContentIntent(pendingIntent)
                     .setOngoing(true)
                     .setSmallIcon(R.mipmap.ic_launcher)
                     .build();
         } else {
             NotificationCompat.Builder builder = new NotificationCompat.Builder(this, notificationChannelId);
-            return builder.setContentTitle("TextBee Active")
-                    .setContentText("SMS gateway service is active")
+            return builder
+                    .setContentTitle("TextBee Active")
+                    .setContentText("SMS gateway polling every 15 seconds")
                     .setOngoing(true)
                     .setSmallIcon(R.mipmap.ic_launcher)
                     .build();
         }
-
     }
 }
