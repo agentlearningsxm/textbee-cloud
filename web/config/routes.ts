@@ -1,8 +1,8 @@
 export const Routes = {
   landingPage: '/',
   contribute: '/contribute',
-  useCases: 'https://textbee.dev/use-cases',
-  quickstart: 'https://textbee.dev/quickstart',
+  useCases: '/dashboard', // Self-hosted: redirects to dashboard
+  quickstart: '/dashboard', // Self-hosted: redirects to dashboard
   login: '/login',
   register: '/register',
   logout: '/logout',
@@ -12,8 +12,8 @@ export const Routes = {
   dashboard: '/dashboard',
 
   downloadAndroidApp: '/download',
-  privacyPolicy: 'https://textbee.dev/privacy-policy',
-  refundPolicy: 'https://textbee.dev/refund-policy',
-  termsOfService: 'https://textbee.dev/terms-of-service',
-  statusPage: 'https://status.textbee.dev',
+  privacyPolicy: '/dashboard', // Self-hosted: no external policy page
+  refundPolicy: '/dashboard', // Self-hosted: no external policy page
+  termsOfService: '/dashboard', // Self-hosted: no external policy page
+  statusPage: 'https://textbee-cloud.onrender.com/api/v1/health', // Your API health endpoint
 }
