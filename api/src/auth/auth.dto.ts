@@ -15,6 +15,9 @@ export class RegisterInputDTO {
 
   @ApiProperty({ type: String, required: true })
   turnstileToken: string
+
+  @ApiProperty({ type: String, required: false, description: 'Invite code (required if REGISTRATION_MODE=invite_only)' })
+  inviteCode?: string
 }
 
 export class LoginInputDTO {

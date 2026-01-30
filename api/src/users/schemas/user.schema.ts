@@ -5,7 +5,8 @@ import { UserRole } from '../user-roles.enum'
 export type UserDocument = User & Document
 
 @Schema({ timestamps: true })
-export class User {
+export class User
+{
   _id?: Types.ObjectId
 
   @Prop({ type: String })

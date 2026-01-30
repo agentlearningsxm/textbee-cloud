@@ -3,7 +3,8 @@ import type { NextRequest } from 'next/server'
 import { getToken } from 'next-auth/jwt'
 import { Routes } from './config/routes'
 
-export async function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest)
+{
   // Extract token using the secret for session-based authentication
   const token = await getToken({
     req: request,
@@ -12,8 +13,10 @@ export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
 
   // if path is /app redirect to login or dashboard based on auth status
-  if (pathname === '/app') {
-    if (!token) {
+  if (pathname === '/app')
+  {
+    if (!token)
+    {
       const loginUrl = new URL(Routes.login, request.url)
       return NextResponse.redirect(loginUrl)
     }
@@ -22,16 +25,38 @@ export async function middleware(request: NextRequest) {
   }
 
   // Check if the path starts with /app/dashboard
-  if (pathname.startsWith(Routes.dashboard)) {
-    if (!token) {
+  if (pathname.startsWith(Routes.dashboard))
+  {
+    if (!token)
+    {
       // Redirect to login if not authenticated
       const loginUrl = new URL(Routes.login, request.url)
       return NextResponse.redirect(loginUrl)
     }
   }
 
+  // Protect admin routes - require ADMIN role
+  if (pathname.startsWith('/admin'))
+  {
+    if (!token)
+    {
+      // Redirect to login if not authenticated
+      const loginUrl = new URL(Routes.login, request.url)
+      return NextResponse.redirect(loginUrl)
+    }
+
+    // Check if user has ADMIN role
+    if (token.role !== 'ADMIN')
+    {
+      // Redirect non-admins to dashboard
+      const dashboardUrl = new URL(Routes.dashboard, request.url)
+      return NextResponse.redirect(dashboardUrl)
+    }
+  }
+
   // If user is authenticated and visiting /app/login or /app/register, redirect to /app/dashboard
-  if (token && (pathname === Routes.login || pathname === Routes.register)) {
+  if (token && (pathname === Routes.login || pathname === Routes.register))
+  {
     const dashboardUrl = new URL(Routes.dashboard, request.url)
     return NextResponse.redirect(dashboardUrl)
   }

@@ -1,8 +1,9 @@
 'use client'
 
-import { Home, MessageSquareText, UserCircle, Users } from 'lucide-react'
+import { Home, MessageSquareText, UserCircle, Users, Shield } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { useSession } from 'next-auth/react'
 import AccountDeletionAlert from './(components)/account-deletion-alert'
 import UpgradeToProAlert from './(components)/upgrade-to-pro-alert'
 import VerifyEmailAlert from './(components)/verify-email-alert'
@@ -15,6 +16,8 @@ export default function DashboardLayout({
   children: React.ReactNode
 }) {
   const pathname = usePathname()
+  const { data: session } = useSession()
+  const isAdmin = session?.user?.role === 'ADMIN'
 
   return (
     <div className='flex min-h-screen flex-col md:flex-row'>
@@ -45,6 +48,14 @@ export default function DashboardLayout({
             label='Account'
             isActive={pathname === '/dashboard/account'}
           />
+          {isAdmin && (
+            <NavItem
+              href='/admin'
+              icon={<Shield className='h-6 w-6 stroke-[1.5]' />}
+              label='Admin'
+              isActive={pathname?.startsWith('/admin')}
+            />
+          )}
         </nav>
       </aside>
 
@@ -61,7 +72,7 @@ export default function DashboardLayout({
 
       {/* Bottom navigation for mobile */}
       <nav className='md:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 shadow-lg z-10'>
-        <div className='flex items-center justify-around h-16'>
+        <div className={`flex items-center ${isAdmin ? 'justify-between' : 'justify-around'} h-16 px-2`}>
           <MobileNavItem
             href='/dashboard'
             icon={<Home className='h-5 w-5 stroke-[1.5]' />}
@@ -86,6 +97,14 @@ export default function DashboardLayout({
             label='Account'
             isActive={pathname === '/dashboard/account'}
           />
+          {isAdmin && (
+            <MobileNavItem
+              href='/admin'
+              icon={<Shield className='h-5 w-5 stroke-[1.5]' />}
+              label='Admin'
+              isActive={pathname?.startsWith('/admin')}
+            />
+          )}
         </div>
       </nav>
 

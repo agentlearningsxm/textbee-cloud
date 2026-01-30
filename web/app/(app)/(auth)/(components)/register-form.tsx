@@ -1,16 +1,18 @@
 'use client'
 
 import { useEffect } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { Alert, AlertDescription } from '@/components/ui/alert'
 
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -30,6 +32,7 @@ const registerSchema = z.object({
     .string()
     .min(8, { message: 'Password must be at least 8 characters long' }),
   phone: z.string().optional(),
+  inviteCode: z.string().optional(),
   marketingOptIn: z.boolean().optional().default(true),
   turnstileToken: z.string().optional(),
 }).refine((data) => {
@@ -46,6 +49,11 @@ type RegisterFormValues = z.infer<typeof registerSchema>
 
 export default function RegisterForm() {
   const router = useRouter()
+  const searchParams = useSearchParams()
+
+  // Get invite code from URL if present
+  const inviteCodeFromUrl = searchParams.get('invite')
+  const isInviteOnly = process.env.NEXT_PUBLIC_REGISTRATION_MODE === 'invite_only'
 
   const form = useForm<RegisterFormValues>({
     resolver: zodResolver(registerSchema),
@@ -54,6 +62,7 @@ export default function RegisterForm() {
       email: '',
       password: '',
       phone: '',
+      inviteCode: inviteCodeFromUrl || '',
       marketingOptIn: true,
       turnstileToken: '',
     },
@@ -88,6 +97,15 @@ export default function RegisterForm() {
   const onSubmit = async (data: RegisterFormValues) => {
     form.clearErrors()
 
+    // Validate invite code is present if required
+    if (isInviteOnly && !data.inviteCode) {
+      form.setError('inviteCode', {
+        type: 'manual',
+        message: 'An invite code is required to register',
+      })
+      return
+    }
+
     if (process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY && !data.turnstileToken) {
       form.setError('turnstileToken', {
         type: 'manual',
@@ -103,16 +121,25 @@ export default function RegisterForm() {
         password: data.password,
         name: data.name,
         phone: data.phone,
+        inviteCode: data.inviteCode,
         marketingOptIn: data.marketingOptIn,
         turnstileToken: data.turnstileToken,
       })
 
       if (result?.error) {
         console.log(result.error)
-        form.setError('root', {
-          type: 'manual',
-          message: 'Failed to create account',
-        })
+        // Check for specific invite code errors
+        if (result.error.toLowerCase().includes('invite')) {
+          form.setError('inviteCode', {
+            type: 'manual',
+            message: 'Invalid or expired invite code',
+          })
+        } else {
+          form.setError('root', {
+            type: 'manual',
+            message: 'Failed to create account',
+          })
+        }
       } else {
         router.push(`${Routes.verifyEmail}?verificationEmailSent=1`)
       }
@@ -128,6 +155,43 @@ export default function RegisterForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4'>
+        {/* Show invite-only notice */}
+        {isInviteOnly && (
+          <Alert className='border-amber-500/50 bg-amber-500/10'>
+            <AlertDescription className='text-amber-700 dark:text-amber-400'>
+              Registration is currently invite-only. Please enter your invite code below.
+            </AlertDescription>
+          </Alert>
+        )}
+
+        {/* Invite Code Field - show prominently if invite-only mode or URL has invite code */}
+        {(isInviteOnly || inviteCodeFromUrl) && (
+          <FormField
+            control={form.control}
+            name='inviteCode'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>
+                  Invite Code {isInviteOnly && <span className='text-red-500'>*</span>}
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder='Enter your invite code'
+                    {...field}
+                    className='dark:text-white dark:bg-gray-800 font-mono uppercase tracking-wider'
+                  />
+                </FormControl>
+                <FormDescription>
+                  {inviteCodeFromUrl
+                    ? 'Your invite code has been pre-filled'
+                    : 'Enter the invite code you received'}
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        )}
+
         <FormField
           control={form.control}
           name='name'
@@ -180,6 +244,28 @@ export default function RegisterForm() {
             </FormItem>
           )}
         />
+
+        {/* Show invite code field at bottom if open registration and no URL code */}
+        {!isInviteOnly && !inviteCodeFromUrl && (
+          <FormField
+            control={form.control}
+            name='inviteCode'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Invite Code (optional)</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder='Have an invite code?'
+                    {...field}
+                    className='dark:text-white dark:bg-gray-800 font-mono uppercase tracking-wider'
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        )}
+
         <FormField
           control={form.control}
           name='turnstileToken'

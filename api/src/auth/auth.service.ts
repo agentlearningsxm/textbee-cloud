@@ -20,6 +20,7 @@ import {
   EmailVerification,
   EmailVerificationDocument,
 } from './schemas/email-verification.schema'
+import { InvitesService } from '../invites/invites.service'
 
 @Injectable()
 export class AuthService {
@@ -34,6 +35,7 @@ export class AuthService {
     private emailVerificationModel: Model<EmailVerificationDocument>,
     private readonly mailService: MailService,
     private readonly turnstileService: TurnstileService,
+    private readonly invitesService: InvitesService,
   ) {}
 
   async login(userData: any) {
@@ -51,6 +53,14 @@ export class AuthService {
       throw new HttpException(
         { error: 'Invalid credentials' },
         HttpStatus.UNAUTHORIZED,
+      )
+    }
+
+    // Check if user is banned
+    if (user.isBanned) {
+      throw new HttpException(
+        { error: 'Your account has been suspended. Please contact support for assistance.' },
+        HttpStatus.FORBIDDEN,
       )
     }
 
@@ -102,6 +112,14 @@ export class AuthService {
       user.avatar = picture
     }
 
+    // Check if user is banned
+    if (user.isBanned) {
+      throw new HttpException(
+        { error: 'Your account has been suspended. Please contact support for assistance.' },
+        HttpStatus.FORBIDDEN,
+      )
+    }
+
     user.lastLoginAt = new Date()
     await user.save()
 
@@ -114,6 +132,27 @@ export class AuthService {
 
   async register(userData: any) {
     await this.turnstileService.verify(userData.turnstileToken)
+
+    // Check if invite code is required
+    const isInviteOnly = this.invitesService.isInviteOnlyMode()
+
+    if (isInviteOnly && !userData.inviteCode) {
+      throw new HttpException(
+        { error: 'An invite code is required to register' },
+        HttpStatus.BAD_REQUEST,
+      )
+    }
+
+    // Validate invite code (without consuming yet)
+    if (userData.inviteCode) {
+      const isValidInvite = await this.invitesService.validateInviteCode(userData.inviteCode)
+      if (!isValidInvite) {
+        throw new HttpException(
+          { error: 'Invalid or expired invite code' },
+          HttpStatus.BAD_REQUEST,
+        )
+      }
+    }
 
     const existingUser = await this.usersService.findOne({
       email: userData.email,
@@ -129,11 +168,16 @@ export class AuthService {
     this.validatePassword(userData.password)
 
     const hashedPassword = await bcrypt.hash(userData.password, 10)
-    const { turnstileToken, ...sanitizedUserData } = userData
+    const { turnstileToken, inviteCode, ...sanitizedUserData } = userData
     const user = await this.usersService.create({
       ...sanitizedUserData,
       password: hashedPassword,
     })
+
+    // Consume the invite code after successful user creation
+    if (inviteCode) {
+      await this.invitesService.validateAndConsumeInvite(inviteCode, user._id)
+    }
 
     user.lastLoginAt = new Date()
     await user.save()

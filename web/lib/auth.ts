@@ -11,6 +11,7 @@ declare module 'next-auth' {
       phone?: string
       avatar?: string
       accessToken?: string
+      role?: 'ADMIN' | 'REGULAR'
     } & DefaultSession['user']
   }
 
@@ -18,6 +19,7 @@ declare module 'next-auth' {
     phone?: string
     avatar?: string
     accessToken?: string
+    role?: 'ADMIN' | 'REGULAR'
   }
 }
 
@@ -62,10 +64,11 @@ export const authOptions = {
         password: { label: 'Password', type: 'password' },
         name: { label: 'Name', type: 'text' },
         phone: { label: 'Phone', type: 'text' },
+        inviteCode: { label: 'Invite Code', type: 'text' },
         turnstileToken: { label: 'Turnstile Token', type: 'text' },
       },
       async authorize(credentials) {
-        const { email, password, name, phone, turnstileToken } = credentials
+        const { email, password, name, phone, inviteCode, turnstileToken } = credentials
         try {
           const res = await httpServerClient.post(
             ApiEndpoints.auth.register(),
@@ -74,6 +77,7 @@ export const authOptions = {
               password,
               name,
               phone,
+              inviteCode,
               turnstileToken,
             }
           )

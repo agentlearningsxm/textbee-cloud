@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common'
+import { forwardRef, Module } from '@nestjs/common'
 import { JwtModule } from '@nestjs/jwt'
 import { MongooseModule } from '@nestjs/mongoose'
 import { PassportModule } from '@nestjs/passport'
@@ -17,6 +17,7 @@ import { AccessLog, AccessLogSchema } from './schemas/access-log.schema'
 import { EmailVerification, EmailVerificationSchema } from './schemas/email-verification.schema'
 import { AuthGuard } from './guards/auth.guard'
 import { OptionalAuthGuard } from './guards/optional-auth.guard'
+import { InvitesModule } from '../invites/invites.module'
 
 @Module({
   imports: [
@@ -48,6 +49,7 @@ import { OptionalAuthGuard } from './guards/optional-auth.guard'
     }),
     MailModule,
     CommonModule,
+    forwardRef(() => InvitesModule),
   ],
   controllers: [AuthController],
   providers: [

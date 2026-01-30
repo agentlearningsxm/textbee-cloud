@@ -43,4 +43,22 @@ export const ApiEndpoints = {
     customerSupport: () => '/support/customer-support',
     requestAccountDeletion: () => '/support/request-account-deletion',
   },
+  admin: {
+    invites: {
+      create: () => '/admin/invites',
+      list: () => '/admin/invites',
+      get: (id: string) => `/admin/invites/${id}`,
+      revoke: (id: string) => `/admin/invites/${id}/revoke`,
+      delete: (id: string) => `/admin/invites/${id}`,
+    },
+    users: {
+      list: () => '/admin/users',
+      get: (id: string) => `/admin/users/${id}`,
+      updateRole: (id: string) => `/admin/users/${id}/role`,
+      ban: (id: string) => `/admin/users/${id}/ban`,
+      unban: (id: string) => `/admin/users/${id}/unban`,
+      delete: (id: string) => `/admin/users/${id}`,
+    },
+    stats: () => '/admin/stats',
+  },
 }
