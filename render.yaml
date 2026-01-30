@@ -1,0 +1,31 @@
+services:
+  # TextBee API Service
+  - type: web
+    name: textbee-api
+    env: node
+    region: oregon
+    plan: free
+    rootDir: api
+    buildCommand: pnpm install && pnpm run build
+    startCommand: pnpm run start:prod
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PNPM_VERSION
+        value: "8.15.0"
+
+  # TextBee Web Service
+  - type: web
+    name: textbee-web
+    env: node
+    region: oregon
+    plan: free
+    rootDir: web
+    buildCommand: pnpm install && pnpm run build
+    startCommand: pnpm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PNPM_VERSION
+        value: "8.15.0"
